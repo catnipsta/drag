@@ -3,37 +3,37 @@ Linux source-based package manager written in bash.
 Utilizes Arch's repo + AUR for wide range of packages.
 ## commands:
 ### stash
-Update your stash by running without any parameters.
+Update your stash by running without any parameters.</br>
 ```stash```
-or update/add select packages by passing them as parameters.
+or update/add select packages by passing them as parameters.</br>
 ```stash sudo vi```
 ### puff
-Download the source files listed in the PKGBUILDs for select packages.
+Download the source files listed in the PKGBUILDs for select packages.</br>
 ```puff sudo vi```
 ### smoke
-Compile and install select packages.
+Compile and install select packages.</br>
 ```smoke sudo vi```
 ### stub
-Uninstall select packages.
+Uninstall select packages.</br>
 ```stub sudo vi```
 ### hotbox
-Update every outdated package on the system according to current stash.
-(It is recommended to update your stash first)
+Update every outdated package on the system according to current stash.</br>
+(It is recommended to update your stash first)</br>
 ```hotbox```
 ### wiff
-View information about select packages.
-Information includes version, description, dependencies, and whether the package has been smoked or not.
+View information about select packages.</br>
+Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
 ```wiff sudo vi```
 ### drags
-View current stash and smoked packages.
+View current stash and smoked packages.</br>
 ```drags```
 ## Files and Directories
-/var/cache/drag/stash                 - your stash of PKGBUILDS
-/var/cache/drag/ashtray/(package)/src - srcdir - where source files are downloaded
-/var/cache/drag/ashtray/(package)/pkg - pkdir  - where packages are compiled
-/var/lib/drag/smoked                  - tracking on smoked packages
-/etc/drag/drag.conf                   - variables such as MAKEFLAGS and CFLAGS should be set in here
-/etc/drag/chronic                     - list packages in this file you would not like to be affected by running 'hotbox'
+/var/cache/drag/stash                 - your stash of PKGBUILDS</br>
+/var/cache/drag/ashtray/(package)/src - srcdir - where source files are downloaded</br>
+/var/cache/drag/ashtray/(package)/pkg - pkdir  - where packages are compiled</br>
+/var/lib/drag/smoked                  - tracking on smoked packages</br>
+/etc/drag/drag.conf                   - variables such as MAKEFLAGS and CFLAGS should be set in here</br>
+/etc/drag/chronic                     - list packages in this file you would not like to be affected by running 'hotbox'</br>
 ## Configuration
 ### drag.conf
 /etc/drag/drag.conf
