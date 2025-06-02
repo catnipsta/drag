@@ -58,9 +58,9 @@ gcc
 ## Installing
 There are two methods of installation:
   1. Installing to existing systems
-  2. Installing to system on mount point
+  2. Installing to system on mount point (not chroot)
 </br>
-The three differences if you are taking the second route is that your must set the DRAG_ROOT variable, place the scripts and config files under your mount point instead of your host system, and add the mount point's /usr/bin to your PATH variable.
+If you are taking the second route, you must set the DRAG_ROOT variable, place the scripts and config files under your mount point's file system, and add the mount point's /usr/bin to your PATH variable.
 If you are installing to a system on a mount point, setting the DRAG_ROOT variable should look something like:
 ```
 export DRAG_ROOT=/mnt/drive
