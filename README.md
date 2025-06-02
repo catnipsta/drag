@@ -76,7 +76,7 @@ binutils
 glibc
 gcc
 ```
-## Installing
+## Installation
 There are two methods of installation:
   1. Installing to existing systems
   2. Installing to system on mount point (not chroot)
@@ -103,3 +103,15 @@ chmod +x scripts/*
 mv scripts/* /usr/bin/
 ```
 4. Optionally, create/edit configuration files
+## FAQ
+Q: Do I have to run stash, puff, and smoke chronologically to install packages?</br>
+A: No. If you haven't stashed or puffed a package previously, smoke will do it for you. To install any package, you may choose to only use the smoke command.</br>
+</br>
+Q: Can I add my own repositories?</br>
+A: As of this moment at least, no you cannot. If you wish to add your own packages though, you still may manually create them in the stash directory.</br>
+</br>
+Q: How does drag handle dependencies?</br>
+A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies, you may use the wiff command.</br>
+</br>
+Q: Is the drag package manager meant to be used with a specific distribution?</br>
+A: Although drag was created for Stone Linux, it can be used practically on any distribution or even LFS.</br>
