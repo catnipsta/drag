@@ -28,12 +28,32 @@ Information includes version, description, dependencies, and whether the package
 View current stash and smoked packages.</br>
 ```drags```
 ## Files and Directories
-/var/cache/drag/stash ............... - your stash of PKGBUILDS</br>
-/var/cache/drag/ashtray/(package)/src - srcdir - where source files are downloaded</br>
-/var/cache/drag/ashtray/(package)/pkg - pkdir  - where packages are compiled</br>
-/var/lib/drag/smoked ................ - tracking on smoked packages</br>
-/etc/drag/drag.conf ................. - variables such as MAKEFLAGS and CFLAGS should be set in here</br>
-/etc/drag/chronic ................... - list packages in this file you would not like to be affected by running 'hotbox'</br>
+<table>
+  <tr>
+    <td>/var/cache/drag/stash</td>
+    <td>Your stash of PKGBUILDs</td>
+  </tr>
+  <tr>
+    <td>/var/cache/drag/ashtray/(package)/src</td>
+    <td>srcdir - where source files are downloaded</td>
+  </tr>
+  <tr>
+    <td>/var/cache/drag/ashtray/(package)/pkg</td>
+    <td>pkgdir - where packages are compiled</td>
+  </tr>
+  <tr>
+    <td>/var/lib/drag/smoked</td>
+    <td>Tracking on smoked packages</td>
+  </tr>
+  <tr>
+    <td>/etc/drag/drag.conf</td>
+    <td>Variables such as MAKEFLAGS and CFLAGS should be defined here</td>
+  </tr>
+  <tr>
+    <td>/etc/drag/chronic</td>
+    <td>List of packages you wish to be ignored by hotbox</td>
+  </tr>
+</table>
 ## Configuration
 ### drag.conf
 /etc/drag/drag.conf</br>
@@ -46,7 +66,7 @@ CXXFLAGS=$CFLAGS
 ```
 ### chronic
 /etc/drag/chronic</br>
-You may list packages in here you wish not to be updated by running 'hotbox'</br>
+You may list packages in here you wish not to be updated by hotbox</br>
 Reminder: Chronic only affects hotbox, not smoke</br>
 Example:
 ```
