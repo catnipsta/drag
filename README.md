@@ -4,7 +4,7 @@ Utilizes Arch's repo + AUR for wide range of packages.
 ## commands:
 ### stash
 Update your stash by running without any parameters.</br>
-```stash```
+```stash```</br>
 or update/add select packages by passing them as parameters.</br>
 ```stash sudo vi```
 ### puff
@@ -28,16 +28,16 @@ Information includes version, description, dependencies, and whether the package
 View current stash and smoked packages.</br>
 ```drags```
 ## Files and Directories
-/var/cache/drag/stash                 - your stash of PKGBUILDS</br>
+/var/cache/drag/stash ............... - your stash of PKGBUILDS</br>
 /var/cache/drag/ashtray/(package)/src - srcdir - where source files are downloaded</br>
 /var/cache/drag/ashtray/(package)/pkg - pkdir  - where packages are compiled</br>
-/var/lib/drag/smoked                  - tracking on smoked packages</br>
-/etc/drag/drag.conf                   - variables such as MAKEFLAGS and CFLAGS should be set in here</br>
-/etc/drag/chronic                     - list packages in this file you would not like to be affected by running 'hotbox'</br>
+/var/lib/drag/smoked ................ - tracking on smoked packages</br>
+/etc/drag/drag.conf ................. - variables such as MAKEFLAGS and CFLAGS should be set in here</br>
+/etc/drag/chronic ................... - list packages in this file you would not like to be affected by running 'hotbox'</br>
 ## Configuration
 ### drag.conf
-/etc/drag/drag.conf
-You may place your MAKEFLAGS, CFLAGS, CXXFLAGS, or whatever other environment variables you would like set during compile time in this file.
+/etc/drag/drag.conf</br>
+You may place your MAKEFLAGS, CFLAGS, CXXFLAGS, or whatever other environment variables you would like set during compile time in this file.</br>
 Example:
 ```
 MAKEFLAGS="-j$(nproc)"
@@ -45,9 +45,9 @@ CFLAGS="-march=native -O2 -pipe"
 CXXFLAGS=$CFLAGS
 ```
 ### chronic
-/etc/drag/chronic
-You may list packages in here you wish not to be updated by running 'hotbox'
-Reminder: Chronic only affects hotbox, not smoke
+/etc/drag/chronic</br>
+You may list packages in here you wish not to be updated by running 'hotbox'</br>
+Reminder: Chronic only affects hotbox, not smoke</br>
 Example:
 ```
 linux
@@ -60,7 +60,7 @@ There are two methods of installation:
   1. Installing to existing systems
   2. Installing to system on mount point (not chroot)
 </br>
-If you are choosing the second option, you must set the DRAG_ROOT variable, place the scripts and config files under your mount point's file system, and add the mount point's /usr/bin to your PATH variable.
+If you are choosing the second option, you must set the DRAG_ROOT variable, place the scripts and config files under your mount point's file system, and add the mount point's /usr/bin to your PATH variable.</br>
 If you are installing to a system on a mount point, setting the DRAG_ROOT variable should look something like:
 
 ```
