@@ -54,6 +54,7 @@ View current stash and smoked packages.</br>
     <td>List of packages you wish to be ignored by hotbox</td>
   </tr>
 </table>
+
 ## Configuration
 ### drag.conf
 /etc/drag/drag.conf</br>
