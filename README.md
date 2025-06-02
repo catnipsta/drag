@@ -59,19 +59,20 @@ gcc
 There are two methods of installation:
   1. Installing to existing systems
   2. Installing to system on mount point
-<br>
+</br>
 The three differences if you are taking the second route is that your must set the DRAG_ROOT variable, place the scripts and config files under your mount point instead of your host system, and add the mount point's /usr/bin to your PATH variable.
-If you are installing to a system on a mount point, setting the DRAG_ROOT variable should look something like:
+If you are installing to a system on a mount point, setting the DRAG_ROOT variable should look something like:</br>
 ```export DRAG_ROOT=/mnt/drive```
-<br>
-<br>
-1. Clone
+</br>
+</br>
+1. Clone</br>
 ```
 git clone https://github.com/catnipsta/drag.git
 cd drag
 ```
-2. Make scripts executable
-```chmod +x scripts/*```
-3. Move scripts to /usr/bin
-```mv scripts/* /usr/bin/```
+</br>
+2. Make scripts executable</br>
+```chmod +x scripts/*```</br>
+3. Move scripts to /usr/bin</br>
+```mv scripts/* /usr/bin/```</br>
 4. Optionally, create/edit configuration files
