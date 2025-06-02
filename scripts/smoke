@@ -1,0 +1,89 @@
+#!/bin/bash
+
+set -e
+
+stash=$DRAG_ROOT/var/cache/drag/stash
+ashtray=$DRAG_ROOT/var/cache/drag/ashtray
+
+if [[ "$EUID" -ne 0 ]]; then
+	echo "Please run drag commands with root privileges"
+	echo
+	exit 1
+elif [[ -z "$@" ]]; then
+	echo "You can't smoke that!"
+	echo
+	exit 1
+else
+	cigs=""
+	for cig in "$@"; do
+		if [[ ! -d $stash/$cig ]]; then
+			echo "$cig has not been stashed!"
+			echo "Attempting to stash $cig..."
+			stash $cig
+		fi
+		(source $stash/$cig/PKGBUILD
+		if [[ ! -d "$ashtray/$cig-$pkgver" ]]; then
+			echo "$cig has not been puffed!"
+			echo "Attempting to puff on $cig..."
+			puff $cig
+		fi
+		cd "$ashtray/$cig-$pkgver/src"
+		for src in "${source[@]}"; do
+			name=""
+			if [[ $src != *".git"* && $src != *"git+"* && $src == *::* ]]; then
+				name=${src%%::*}
+			elif [[ $src != *".git"* && $src != *"git+"* ]]; then
+				name=${src##*/}
+			fi
+			noextract=false
+			if [[ -n $noextract ]]; then
+				for i in ${noextract[@]}; do
+					if [[ $name == $i ]]; then
+						noextract=true
+						break
+					fi
+				done
+			fi
+			if [[ ( $name == *.tar* || $name == *.zip* ) && $name != *.sig && $name != *.asc && $noextract == false ]]; then
+				echo "Extracting $name..."
+				case "$name" in
+					*.tar.gz|*.tgz) tar -xzf $ashtray/$cig-$pkgver/src/$name;;
+					*.tar.xz)       tar -xJf $ashtray/$cig-$pkgver/src/$name;;
+					*.tar.bz2)      tar -xjf $ashtray/$cig-$pkgver/src/$name;;
+					*.tar)          tar -xf  $ashtray/$cig-$pkgver/src/$name;;
+					*.zip)          unzip    $ashtray/$cig-$pkgver/src/$name;;
+					*)		echo     "Unkown compression type for $name!"; exit 1;;
+				esac
+			fi
+		done
+		set -a
+		source $DRAG_ROOT/etc/drag/drag.conf
+		set +a
+		srcdir="$ashtray/$cig-$pkgver/src"
+		pkgdir="$ashtray/$cig-$pkgver/pkg"
+		if declare -F prepare > /dev/null; then prepare; fi
+		cd "$ashtray/$cig-$pkgver/src"
+		if declare -F build   > /dev/null; then   build; fi
+		cd "$ashtray/$cig-$pkgver/src"
+		if declare -F check   > /dev/null; then   check; fi
+		cd "$ashtray/$cig-$pkgver/src"
+		if declare -F package > /dev/null; then package; fi
+		mkdir -p $DRAG_ROOT/var/lib/drag/smoked/$cig
+		echo $pkgver | tee $DRAG_ROOT/var/lib/drag/smoked/$cig/ver > /dev/null
+		for file in $(find $ashtray/$cig-$pkgver/pkg/* \( -type f -o -type l -o -type s -o -type p \)); do
+			echo "${file#*/pkg}" >> $DRAG_ROOT/var/lib/drag/smoked/$cig/clutter
+		done
+		cp -a $ashtray/$cig-$pkgver/pkg/. /
+		echo
+		echo "Smoked $cig-$pkgver!"
+		echo)
+	done
+	cigs="$cigs $cig,"
+	cigs="${cigs%%,}"
+	echo
+	if [[ -n "$cigs" ]]; then
+		echo "Smoked$cigs"
+	fi
+	echo
+	exit 0
+fi

@@ -1,0 +1,113 @@
+#!/bin/bash
+
+set -e
+
+stash=$DRAG_ROOT/var/cache/drag/stash
+ashtray=$DRAG_ROOT/var/cache/drag/ashtray
+
+if [[ "$EUID" -ne 0 ]]; then
+	echo "Please run drag commands with root privileges"
+	echo
+	exit 1
+elif [[ -z "$@" ]]; then
+	echo "You can't puff on that!"
+	echo
+	exit 1
+else
+	cigs=""
+	for cig in "$@"; do
+		if [ ! -d $stash/$cig ]; then
+			echo "$cig has not been stashed!"
+			echo "Attempting to stash $cig..."
+			stash $cig
+		fi
+		(source $stash/$cig/PKGBUILD
+		mkdir -p $ashtray/$cig-$pkgver/src
+		for i in "${!source[@]}"; do
+			if [[ "${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"* ]]; then
+				if [[ ${source[$i]} == *::* ]]; then
+					name="${source[$i]%%::*}"
+				else
+					name="${source[$i]##*/}"
+					name="${name%%.git*}"
+					name="${name%%\#*}"
+				fi
+				url="${source[$i]#*git+}"
+				commit="${url##*commit=}"
+				commit="${commit%%\&*}"
+				commit="${commit%%\?*}"
+				tag="${url##*tag=}"
+				tag="${tag%%\&*}"
+				tag="${tag%%\?*}"
+				branch="${url##*branch=}"
+				branch="${branch%%\&*}"
+				branch="${branch%%\?*}"
+				url="${url%%\?*}"
+				url="${url%%#*}"
+				if [[ ${source[$i]} == *commit=* ]]; then
+					git clone $url $ashtray/$cig-$pkgver/src/$name
+					git -C $ashtray/$cig-$pkgver/src/$name checkout $commit
+				elif [[ ${source[$i]} == *tag=* ]]; then
+					git clone --branch $tag $url $ashtray/$cig-$pkgver/src/$name
+				elif [[ ${source[$i]} == *branch=* ]]; then
+					git clone --branch $branch $url $ashtray/$cig-$pkgver/src/$name
+				else
+					git clone $url $ashtray/$cig-$pkgver/src/$name
+				fi
+			else
+				if [[ ${source[$i]} == *::* ]]; then
+					name=${source[$i]%%::*}
+				else
+					name=${source[$i]##*/}
+				fi
+				if [[ ${source[$i]} == *http* || ${source[$i]} == *ftp* ]]; then
+					echo "Downloading $name"
+				else
+					cp $stash/$cig/$name $ashtray/$cig-$pkgver/src/$name
+				fi
+				if [[ "${source[$i]}" == *http* ]]; then
+					wget -q -O $ashtray/$cig-$pkgver/src/$name "http${source[$i]#*http}"
+				elif [[ ${source[$i]} == *ftp* ]]; then
+					wget -q -O $ashtray/$cig-$pkgver/src/$name "ftp${source[$i]#*ftp}"
+				fi
+				if [[ -n $sha256sums ]]; then
+					actual=$(sha256sum $ashtray/$cig-$pkgver/src/$name)
+					expected=${sha256sums[$i]}
+				elif [[ -n $sha512sums ]]; then
+					actual=$(sha512sum $ashtray/$cig-$pkgver/src/$name)
+					expected=${sha512sums[$i]}
+				elif [[ -n $bd2sums ]]; then
+					actual=$(bd2sum $ashtray/$cig-$pkgver/src/$name)
+					expected=${bd2sums[$i]}
+				elif [[ -n $md5sums ]]; then
+					actual=$(md5sum $ashtray/$cig-$pkgver/src/$name)
+					expected=${md5sums [$i]}
+				else
+					actual=""
+					expected="SKIP"
+					echo "SKIPPING CHECKSUM FOR $name!"
+					echo "BE WARNED!"
+				fi
+				actual=${actual%%\ *}
+				if [[ $actual == $expected ]]; then
+					echo "Checksum matched for $name"
+				elif [[ $expected == SKIP ]]; then
+					echo "Checksum skipped for $name"
+				else
+					echo "CHECKSUM VALIDATION FAILED FOR $name"
+					echo "BE WARNED!"
+					echo "Expected: $expected"
+					echo "Actual:   $actual"
+					echo
+					exit 1
+				fi
+			fi
+		done)
+		cigs="$cigs $cig,"
+	done
+	cigs="${cigs%%,}"
+	echo
+	echo "Puffed$cigs"
+	echo
+	exit 0
+fi

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+smoked=$DRAG_ROOT/var/lib/drag/smoked
+
+if [[ "$EUID" -ne 0 ]]; then
+	echo "Please run drag commands with root privileges"
+	echo
+	exit 1
+elif [[ -z "$@" ]]; then
+	echo "You can't stub that!"
+	echo
+	exit 1
+else
+	cigs=""
+	for cig in $@; do
+		if [[ ! -d $smoked/$cig ]]; then
+			echo "$cig has not been smoked!"
+			echo
+			exit 1
+		else
+			if [[ -f $smoked/$cig/clutter ]]; then
+				while IFS= read -r file; do
+					rm -f $DRAG_ROOT$file
+				done < $smoked/$cig/clutter
+			fi
+			rm -rf $smoked/$cig
+		fi
+		echo "Stubbed $cig"
+		cigs="$cigs $cig,"
+	done
+	echo
+	cigs="${cigs%%,}"
+	echo "Stubbed$cigs"
+	echo
+	exit 0
+fi
