@@ -66,13 +66,13 @@ If you are installing to a system on a mount point, setting the DRAG_ROOT variab
 export DRAG_ROOT=/mnt/drive
 ```
 </br>
-</br>
-1. Clone
+
+Clone
 ```
 git clone https://github.com/catnipsta/drag.git
 cd drag
 ```
-2. Make scripts executable</br>
+Make scripts executable</br>
 ```
 chmod +x scripts/*
 ```
