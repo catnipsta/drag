@@ -63,7 +63,7 @@ Example:
 ```
 MAKEFLAGS="-j$(nproc)"
 CFLAGS="-march=native -O2 -pipe"
-CXXFLAGS=$CFLAGS
+CXXFLAGS="$CFLAGS"
 ```
 ### chronic
 /etc/drag/chronic</br>
