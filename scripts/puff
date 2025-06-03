@@ -22,7 +22,9 @@ else
 			stash $cig
 		fi
 		(source $stash/$cig/PKGBUILD
-		mkdir -p $ashtray/$cig-$pkgver/src
+		rm -rf $ashtray/$cig/
+		mkdir -p $ashtray/$cig/src
+		echo "$pkgver" | tee $ashtray/$cig/ver
 		for i in "${!source[@]}"; do
 			if [[ "${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"* ]]; then
 				if [[ ${source[$i]} == *::* ]]; then
@@ -45,14 +47,14 @@ else
 				url="${url%%\?*}"
 				url="${url%%#*}"
 				if [[ ${source[$i]} == *commit=* ]]; then
-					git clone $url $ashtray/$cig-$pkgver/src/$name
-					git -C $ashtray/$cig-$pkgver/src/$name checkout $commit
+					git clone $url $ashtray/$cig/src/$name
+					git -C $ashtray/$cig/src/$name checkout $commit
 				elif [[ ${source[$i]} == *tag=* ]]; then
-					git clone --branch $tag $url $ashtray/$cig-$pkgver/src/$name
+					git clone --branch $tag $url $ashtray/$cig/src/$name
 				elif [[ ${source[$i]} == *branch=* ]]; then
-					git clone --branch $branch $url $ashtray/$cig-$pkgver/src/$name
+					git clone --branch $branch $url $ashtray/$cig/src/$name
 				else
-					git clone $url $ashtray/$cig-$pkgver/src/$name
+					git clone $url $ashtray/$cig/src/$name
 				fi
 			else
 				if [[ ${source[$i]} == *::* ]]; then
@@ -63,24 +65,24 @@ else
 				if [[ ${source[$i]} == *http* || ${source[$i]} == *ftp* ]]; then
 					echo "Downloading $name"
 				else
-					cp $stash/$cig/$name $ashtray/$cig-$pkgver/src/$name
+					cp $stash/$cig/$name $ashtray/$cig/src/$name
 				fi
 				if [[ "${source[$i]}" == *http* ]]; then
-					wget -q -O $ashtray/$cig-$pkgver/src/$name "http${source[$i]#*http}"
+					wget -q -O $ashtray/$cig/src/$name "http${source[$i]#*http}"
 				elif [[ ${source[$i]} == *ftp* ]]; then
-					wget -q -O $ashtray/$cig-$pkgver/src/$name "ftp${source[$i]#*ftp}"
+					wget -q -O $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
 				fi
 				if [[ -n $sha256sums ]]; then
-					actual=$(sha256sum $ashtray/$cig-$pkgver/src/$name)
+					actual=$(sha256sum $ashtray/$cig/src/$name)
 					expected=${sha256sums[$i]}
 				elif [[ -n $sha512sums ]]; then
-					actual=$(sha512sum $ashtray/$cig-$pkgver/src/$name)
+					actual=$(sha512sum $ashtray/$cig/src/$name)
 					expected=${sha512sums[$i]}
 				elif [[ -n $bd2sums ]]; then
-					actual=$(bd2sum $ashtray/$cig-$pkgver/src/$name)
+					actual=$(bd2sum $ashtray/$cig/src/$name)
 					expected=${bd2sums[$i]}
 				elif [[ -n $md5sums ]]; then
-					actual=$(md5sum $ashtray/$cig-$pkgver/src/$name)
+					actual=$(md5sum $ashtray/$cig/src/$name)
 					expected=${md5sums [$i]}
 				else
 					actual=""

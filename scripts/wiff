@@ -16,17 +16,21 @@ else
 			stash $cig
 		fi
 		(source $stash/$cig/PKGBUILD
-		echo "$pkgname - $pkgver"
-		echo $pkgdesc 
 		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
-			echo "$cig has been smoked"
+			echo "$pkgname"
+			echo "Latest version: $pkgver"
+			echo "Smoked version: $(cat /var/lib/drag/smoked/$cig/ver)"
 		else
+			echo "$pkgname - $pkgver"
 			echo "$cig has not been smoked"
 		fi
+		echo $pkgdesc 
 		echo
-		echo "Dependencies: ${depends[*]}"
-                       echo "Optional dependencies: ${optdepends[*]}"
-                       echo "Make dependencies: ${makedepends[*]}")
+		echo "Depends: ${depends[*]}"
+                echo "Optional depends: ${optdepends[*]}"
+                echo "Make depends: ${makedepends[*]}"
+		echo "Check depends: ${checkdepends[*]}"
+		echo "Conflicts: ${conflicts[*]}")
 		echo
 	done
 	exit 0

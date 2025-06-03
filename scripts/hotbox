@@ -13,7 +13,6 @@ elif [ -z "$(ls $DRAG_ROOT/var/lib/drag/smoked/)" ]; then
 else
 	if [[ -n $@ ]]; then
 		echo "ARGUMENTS NOT CONSIDERED"
-		echo "BE WARNED!"
 		echo
 	fi
 	for cig in $DRAG_ROOT/var/lib/drag/smoked/*; do
@@ -24,25 +23,19 @@ else
 		fi
 		cig="${cig##*/}"
 		chronic=false
-		if [ -f $DRAG_ROOT/etc/drag/chronic ]; then
+		if [ -f $DRAG_ROOT/etc/chronic ]; then
 			while read -r ccig; do
 				if [ $ccig == $cig ]; then
 					chronic=true
 				fi
-			done < $DRAG_ROOT/etc/drag/chronic
+			done < $DRAG_ROOT/etc/chronic
 		fi
 		(source $DRAG_ROOT/var/cache/drag/stash/$cig/PKGBUILD
 		if [[ $(cat $DRAG_ROOT/var/lib/drag/smoked/$cig/ver) != $pkgver && $chronic == false ]]; then
-			echo "Smoking $cig"
-			smoke $cig
-			cigs="$cigs $cig,"
+			echo "$cig latest version: $pkgver"
+			echo "$cig smoked version: $(cat $DRAG_ROOT/var/lib/drag/smoked/$cig/ver)"
+			echo
 		fi)
 	done
-	cigs="${cigs%%,}"
-	echo
-	if [[ -n $cigs ]]; then
-		echo "Hotboxed$cigs"
-	fi
-	echo
 	exit 0
 fi
