@@ -12,7 +12,9 @@ Download the source files listed in the PKGBUILDs for select packages.</br>
 ```puff sudo vi```
 ### smoke
 Comparably to checkinstall, runs install command suited to compiler and tracks installed files.</br>
-```smoke sudo vi```
+You must have configured and compiled the file already and be inside of the build directory when running smoke.</br>
+You must pass exactly one argument: the name of the package being installed.</br>
+```smoke sudo```
 ### stub
 Uninstall select packages.</br>
 ```stub sudo vi```
@@ -97,13 +99,8 @@ chmod +x scripts/*
 mv scripts/* /usr/bin/
 ```
 4. Optionally, create/edit configuration files
-## Typical Usage
-### Stash/puff the package
-Puffing the package without stashing first should work fine since puff attempts to stash unstashed packages before puffing.
-```puff vi```
-### cd to source directory
-```cd /var/cache/drag/ashtray/vi/src```
-### Compile accordingly
+## Typical Usage Example
+//coming soon
 ## FAQ
 Q: Can I add my own repositories?</br>
 A: As of this moment at least, no you cannot. If you wish to add your own packages though, you still may manually create them in the stash directory.</br>
