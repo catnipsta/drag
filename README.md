@@ -3,22 +3,21 @@ Source-based package manager for Linux distributions written in bash.
 Utilizes Arch's repo + AUR for wide range of package support.
 ## commands:
 ### stash
-Update your stash by running without any parameters.</br>
+Update your stash by running without any parameters,</br>
 ```stash```</br>
-or update/add select packages by passing them as parameters.</br>
+or update/add select packages to your stash by passing them as parameters.</br>
 ```stash sudo vi```
 ### puff
 Download the source files listed in the PKGBUILDs for select packages.</br>
 ```puff sudo vi```
 ### smoke
-Compile and install select packages.</br>
+Comparably to checkinstall, runs install command suited to compiler and tracks installed files.</br>
 ```smoke sudo vi```
 ### stub
 Uninstall select packages.</br>
 ```stub sudo vi```
 ### hotbox
-Update every outdated package on the system according to current stash.</br>
-(It is recommended to update your stash first)</br>
+Lists out of date packages</br>
 ```hotbox```
 ### wiff
 View information about select packages.</br>
@@ -27,7 +26,7 @@ Information includes version, description, dependencies, and whether the package
 ### drags
 View current stash and smoked packages.</br>
 ```drags```
-## Files and Directories
+## Common Files and Directories
 <table>
   <tr>
     <td>/var/cache/drag/stash</td>
@@ -39,36 +38,31 @@ View current stash and smoked packages.</br>
   </tr>
   <tr>
     <td>/var/cache/drag/ashtray/(package)/pkg</td>
-    <td>pkgdir - where packages are compiled</td>
+    <td>pkgdir - where packages are compiled to</td>
   </tr>
   <tr>
     <td>/var/lib/drag/smoked</td>
-    <td>Tracking on smoked packages</td>
+    <td>Tracking for smoked packages</td>
   </tr>
   <tr>
-    <td>/etc/drag/drag.conf</td>
-    <td>Variables such as MAKEFLAGS and CFLAGS should be defined here</td>
-  </tr>
-  <tr>
-    <td>/etc/drag/chronic</td>
+    <td>/etc/chronic</td>
     <td>List of packages you wish to be ignored by hotbox</td>
   </tr>
 </table>
 
 ## Configuration
-### drag.conf
-/etc/drag/drag.conf</br>
-You may place your MAKEFLAGS, CFLAGS, CXXFLAGS, or whatever other environment variables you would like set during compile time in this file.</br>
+### Compile flags
+/etc/profile</br>
+Here you can export your MAKEFLAGS, CFLAGS or whatever other variables needed to suit your compiling needs.</br>
 Example:
 ```
-MAKEFLAGS="-j$(nproc)"
-CFLAGS="-march=native -O2 -pipe"
-CXXFLAGS="$CFLAGS"
+export MAKEFLAGS="-j$(nproc)
+export CFLAGS="-march=native -O2 -pipe"
+export CXXFLAGS="$CFLAGS"
 ```
 ### chronic
-/etc/drag/chronic</br>
-You may list packages in here you wish not to be updated by hotbox</br>
-Reminder: Chronic only affects hotbox, not smoke</br>
+/etc/chronic</br>
+You may list packages in here you wish to be ignored by hotbox</br>
 Example:
 ```
 linux
@@ -103,15 +97,22 @@ chmod +x scripts/*
 mv scripts/* /usr/bin/
 ```
 4. Optionally, create/edit configuration files
+## Typical Usage
+### Stash/puff the package
+Puffing the package without stashing first should work fine since puff attempts to stash unstashed packages before puffing.
+```puff vi```
+### cd to source directory
+```cd /var/cache/drag/ashtray/vi/src```
+### Compile accordingly
 ## FAQ
-Q: Do I have to run stash, puff, and smoke chronologically to install packages?</br>
-A: No. If you haven't stashed or puffed a package previously, smoke will do it for you. To install any package, you may choose to only use the smoke command.</br>
-</br>
 Q: Can I add my own repositories?</br>
 A: As of this moment at least, no you cannot. If you wish to add your own packages though, you still may manually create them in the stash directory.</br>
 </br>
 Q: How does drag handle dependencies?</br>
 A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies, you may use the wiff command.</br>
 </br>
+Q: Do I have to stash and package first in order for puff or wiff to work?</br>
+A: No. If you haven't stashed a package previously, puff or wiff will attempt to stash it for you.</br>
+</br>
 Q: Is the drag package manager meant to be used with a specific distribution?</br>
-A: Although drag was created for Stone Linux, it can be used practically on any distribution or even LFS.</br>
+A: Although drag was created for Stone Linux, it can be used practically on any distribution and even LFS.</br>
