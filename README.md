@@ -6,25 +6,25 @@ Utilizes Arch's repo + AUR for wide range of package support.
 Update your stash by running without any parameters,</br>
 ```stash```</br>
 or update/add select packages to your stash by passing them as parameters.</br>
-```stash sudo vi```
+```stash htop vi```
 ### puff
 Download the source files listed in the PKGBUILDs for select packages.</br>
-```puff sudo vi```
+```puff htop vi```
 ### smoke
-Comparably to checkinstall, runs install command suited to compiler and tracks installed files.</br>
-You must have configured and compiled the file already and be inside of the build directory when running smoke.</br>
+Tracks installed files and version of package.</br>
+You must have run 'make install' or similar with DESTDIR set to the pkgdir before running.</br>
 You must pass exactly one argument: the name of the package being installed.</br>
-```smoke sudo```
+```smoke htop```
 ### stub
 Uninstall select packages.</br>
-```stub sudo vi```
+```stub htop vi```
 ### hotbox
-Lists out of date packages</br>
+Lists out of date packages.</br>
 ```hotbox```
 ### wiff
 View information about select packages.</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
-```wiff sudo vi```
+```wiff htop vi```
 ### drags
 View current stash and smoked packages.</br>
 ```drags```
@@ -99,17 +99,30 @@ chmod +x scripts/*
 mv scripts/* /usr/bin/
 ```
 4. Optionally, create/edit configuration files
-## Typical Usage Example
-//coming soon
+## Package Installation Example
+### puff
+```puff htop```
+### cd to srcdir
+```cd /var/cache/drag/ashtray/htop/src```
+### compile
+```
+cd htop
+./autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=../../pkg install
+```
+### smoke
+```smoke htop```
 ## FAQ
 Q: Can I add my own repositories?</br>
-A: As of this moment at least, no you cannot. If you wish to add your own packages though, you still may manually create them in the stash directory.</br>
+A: As of this moment at least, no you cannot. If you wish to add your own packages though, you may manually place them in the stash directory.</br>
 </br>
 Q: How does drag handle dependencies?</br>
 A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies, you may use the wiff command.</br>
 </br>
-Q: Do I have to stash and package first in order for puff or wiff to work?</br>
+Q: Do I have to stash a package first in order for puff or wiff to work?</br>
 A: No. If you haven't stashed a package previously, puff or wiff will attempt to stash it for you.</br>
 </br>
 Q: Is the drag package manager meant to be used with a specific distribution?</br>
-A: Although drag was created for Stone Linux, it can be used practically on any distribution and even LFS.</br>
+A: Although drag was created for Stone Linux (coming soon), it can be used practically on any distribution, or even LFS.</br>
