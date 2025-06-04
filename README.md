@@ -101,9 +101,13 @@ mv scripts/* /usr/bin/
 4. Optionally, create/edit configuration files
 ## Package Installation Example
 ### puff
-```puff htop```
+```
+puff htop
+```
 ### cd to srcdir
-```cd /var/cache/drag/ashtray/htop/src```
+```
+cd /var/cache/drag/ashtray/htop/src
+```
 ### compile
 ```
 cd htop
@@ -113,7 +117,9 @@ make
 make DESTDIR=../../pkg install
 ```
 ### smoke
-```smoke htop```
+```
+smoke htop
+```
 ## FAQ
 Q: Can I add my own repositories?</br>
 A: As of this moment at least, no you cannot. If you wish to add your own packages though, you may manually place them in the stash directory.</br>
