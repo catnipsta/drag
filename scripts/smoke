@@ -25,14 +25,11 @@ else
 		echo "Attempting to puff on $cig..."
 		puff $cig
 	fi
-	if [ -f Makefile ]; then
-		make DESTDIR="$ashtray/$cig/$pkg" install
-	elif [ -f build.ninja || -f meson.build ]; then
-		DESTDIR="$ashtray/$cig/$pkg" ninja install
-	elif [ -f setup.py ]; then
-		python setup.py install --root="$ashtray/$cig/$pkg"
-	else
-		echo "Build system unknown"
+	if [ -z $(ls $ashtray/$cig/pkg) ]; then
+		echo "$cig's pkgdir is empty!"
+		echo "Please run the install command with DESTDIR set to the pkgdir first."
+		echo "Example for make:"
+		echo "make DESTDIR=$ashtray/$cig/pkg install"
 		echo
 		exit 1
 	fi
