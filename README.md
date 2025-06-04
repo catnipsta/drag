@@ -1,5 +1,5 @@
 # drag (EARLY BETA)
-Source-based package manager written in bash for Linux.
+Source-based package manager written in bash for Linux distributions.
 Utilizes Arch's repo + AUR for wide range of package support.
 ## commands:
 ### stash
