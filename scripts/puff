@@ -62,14 +62,14 @@ else
 				else
 					name=${source[$i]##*/}
 				fi
-				if [[ ${source[$i]} == *http* || ${source[$i]} == *ftp* ]]; then
+				if [[ ${source[$i]} == *"http://"* || ${source[$i]} == *"https://"* || ${source[$i]} == *"ftp://"* ]]; then
 					echo "Downloading $name"
 				else
 					cp $stash/$cig/$name $ashtray/$cig/src/$name
 				fi
-				if [[ "${source[$i]}" == *http* ]]; then
+				if [[ "${source[$i]}" == *"http://"* || ${source[$i]} == *"https://"* ]]; then
 					wget -q -O $ashtray/$cig/src/$name "http${source[$i]#*http}"
-				elif [[ ${source[$i]} == *ftp* ]]; then
+				elif [[ ${source[$i]} == *"ftp://"* ]]; then
 					wget -q -O $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
 				fi
 				if [[ -n $sha256sums ]]; then
