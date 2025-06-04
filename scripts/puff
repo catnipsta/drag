@@ -26,7 +26,7 @@ else
 		mkdir -p $ashtray/$cig/src
 		echo "$pkgver" | tee $ashtray/$cig/ver
 		for i in "${!source[@]}"; do
-			if [[ "${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"* ]]; then
+			if [[ ("${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"*) && "${source[$i]}" != *"raw.git"* ]]; then
 				if [[ ${source[$i]} == *::* ]]; then
 					name="${source[$i]%%::*}"
 				else
@@ -97,7 +97,6 @@ else
 					echo "Checksum skipped for $name"
 				else
 					echo "CHECKSUM VALIDATION FAILED FOR $name"
-					echo "BE WARNED!"
 					echo "Expected: $expected"
 					echo "Actual:   $actual"
 					echo
