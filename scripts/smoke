@@ -32,7 +32,7 @@ else
 	for file in $(find $ashtray/$cig/pkg/* \( -type f -o -type l -o -type s -o -type p \)); do
 		echo "${file#*/pkg}" >> $DRAG_ROOT/var/lib/drag/smoked/$cig/clutter
 	done
-	cp -a $ashtray/$cig/pkg/. /
+	cp -a $ashtray/$cig/pkg/. "$DRAG_ROOT/"
 	echo
 	echo "Smoked $cig!"
 	echo
