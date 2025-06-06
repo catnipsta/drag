@@ -52,7 +52,9 @@ else
 					echo "Skipping GPG Verification, using commit."
 				elif [[ ${source[$i]} == *tag=* ]]; then
 					git clone --branch $tag $url $ashtray/$cig/src/$name
-					if [[ -n $(cd $ashtray/$cig/src/$name && git tag -v $tag 2>&1 | grep ${validpgpkeys[$i]}) ]]; then
+					key=$(cd $ashtray/$cig/src/$name && git tag -v $tag 2>&1 | grep "RSA key")
+					key=${key##*key }
+					if [[ "${validpgpkeys[*]}" == *"$key"* ]]; then
 						echo "Verified GPG key for $name!"
 					else
 						echo "GPG VERIFICATION FAILED FOR $name!"
