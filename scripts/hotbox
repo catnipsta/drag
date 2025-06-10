@@ -30,12 +30,12 @@ else
 				fi
 			done < $DRAG_ROOT/etc/chronic
 		fi
-		(source $DRAG_ROOT/var/cache/drag/stash/$cig/PKGBUILD
+		source $DRAG_ROOT/var/cache/drag/stash/$cig/PKGBUILD
 		if [[ $(cat $DRAG_ROOT/var/lib/drag/smoked/$cig/ver) != $pkgver && $chronic == false ]]; then
 			echo "$cig latest version: $pkgver"
 			echo "$cig smoked version: $(cat $DRAG_ROOT/var/lib/drag/smoked/$cig/ver)"
 			echo
-		fi)
+		fi
 	done
 	exit 0
 fi

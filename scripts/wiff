@@ -15,7 +15,7 @@ else
 			echo "Attempting to stash $cig..."
 			stash $cig
 		fi
-		(source $stash/$cig/PKGBUILD
+		source $stash/$cig/PKGBUILD
 		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
 			echo "$pkgname"
 			echo "Latest version: $pkgver"
@@ -30,7 +30,7 @@ else
                 echo "Optional depends: ${optdepends[*]}"
                 echo "Make depends: ${makedepends[*]}"
 		echo "Check depends: ${checkdepends[*]}"
-		echo "Conflicts: ${conflicts[*]}")
+		echo "Conflicts: ${conflicts[*]}"
 		echo
 	done
 	exit 0

@@ -21,7 +21,7 @@ else
 			echo "Attempting to stash $cig..."
 			stash $cig
 		fi
-		(source $stash/$cig/PKGBUILD
+		source $stash/$cig/PKGBUILD
 		rm -rf $ashtray/$cig/
 		mkdir -p $ashtray/$cig/src
 		echo "$pkgver" | tee $ashtray/$cig/ver
@@ -123,7 +123,7 @@ else
 					exit 1
 				fi
 			fi
-		done)
+		done
 		cigs="$cigs $cig,"
 	done
 	cigs="${cigs%%,}"
