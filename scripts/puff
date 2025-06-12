@@ -16,6 +16,24 @@ elif [[ -z "$@" ]]; then
 else
 	cigs=""
 	for cig in "$@"; do
+		if [ $cig == ca-certificates ]; then
+			echo "Puffing ca-certificates..."
+			wget -qO ca-certificates.crt https://curl.se/ca/cacert.pem
+			wget -qO certsha256sum       https://curl.se/ca/cacert.pem.sha256
+			actual=$(sha256sum ca-certificates.crt)
+			actual=${actual%%\ *}
+			if [[ "$(cat certsha256sum)" == *$actual* ]]; then
+				echo "Verified ca-certificates!"
+				echo
+				mv ca-certificates.crt /etc/ssl/certs/
+				rm certsha256sum
+				cigs="$cigs $cig,"
+			else
+				echo "CHECKSUM VALIDATION FAILED FOR ca-certificates!"
+				echo
+				exit 1
+			fi
+		else
 		if [ ! -d $stash/$cig ]; then
 			echo "$cig has not been stashed!"
 			echo "Attempting to stash $cig..."
@@ -125,6 +143,7 @@ else
 			fi
 		done
 		cigs="$cigs $cig,"
+		fi
 	done
 	cigs="${cigs%%,}"
 	echo
