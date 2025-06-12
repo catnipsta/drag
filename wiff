@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+stash=$DRAG_ROOT/var/cache/drag/stash
+
+if [[ -z "$@" ]]; then
+	echo "You can't wiff that!"
+	echo
+	exit 1
+else
+	for cig in "$@"; do
+		if [ ! -d $stash/$cig ]; then
+			echo "$cig has not been stashed."
+			echo "Attempting to stash $cig..."
+			stash $cig
+		fi
+		source $stash/$cig/PKGBUILD
+		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
+			echo "$pkgname"
+			echo "Latest version: $pkgver"
+			echo "Smoked version: $(cat $DRAG_ROOT/var/lib/drag/smoked/$cig/ver)"
+		else
+			echo "$pkgname - $pkgver"
+			echo "$cig has not been smoked"
+		fi
+		echo $pkgdesc 
+		echo
+		echo "Depends: ${depends[*]}"
+                echo "Optional depends: ${optdepends[*]}"
+                echo "Make depends: ${makedepends[*]}"
+		echo "Check depends: ${checkdepends[*]}"
+		echo "Conflicts: ${conflicts[*]}"
+		echo
+	done
+	exit 0
+fi
