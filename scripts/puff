@@ -25,7 +25,7 @@ else
 			if [[ "$(cat certsha256sum)" == *$actual* ]]; then
 				echo "Verified ca-certificates!"
 				echo
-				mv ca-certificates.crt /etc/ssl/certs/
+				mv ca-certificates.crt $DRAG_ROOT/etc/ssl/certs/
 				rm certsha256sum
 				cigs="$cigs $cig,"
 			else
