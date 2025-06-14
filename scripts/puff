@@ -119,7 +119,7 @@ else
 					expected=${bd2sums[$i]}
 				elif [[ -n $md5sums ]]; then
 					actual=$(md5sum $ashtray/$cig/src/$name)
-					expected=${md5sums [$i]}
+					expected=${md5sums[$i]}
 				else
 					actual=""
 					expected="SKIP"
