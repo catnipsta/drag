@@ -76,8 +76,14 @@ else
 						echo "Verified GPG key for $name!"
 					else
 						echo "GPG VERIFICATION FAILED FOR $name!"
+						read -p "Continue anyway? [y/N] " choice
+						case $choice in
+							[yY])
+							;;
+							*)
+							exit 1;;
+						esac
 						echo
-						exit 1
 					fi
 				elif [[ ${source[$i]} == *branch=* ]]; then
 					git clone --branch $branch $url $ashtray/$cig/src/$name
@@ -137,8 +143,14 @@ else
 					echo "CHECKSUM VALIDATION FAILED FOR $name"
 					echo "Expected: $expected"
 					echo "Actual:   $actual"
+					read -p "Continue anyway? [y/N] " choice
+					case $choice in
+						[yY])
+						;;
+						*)
+						exit 1;;
+					esac
 					echo
-					exit 1
 				fi
 			fi
 		done
