@@ -7,9 +7,9 @@ Update your stash by running without any parameters,</br>
 ```stash```</br>
 or update/add select packages to your stash by passing them as parameters.</br>
 ```stash htop vi```
-### puff
+### pinch
 Download the source files listed in the PKGBUILDs for select packages.</br>
-```puff htop vi```
+```pinch htop vi```
 ### smoke
 Tracks installed files and version of package.</br>
 You must have run 'make install' or similar with DESTDIR set to the pkgdir before running.</br>
@@ -100,9 +100,9 @@ mv scripts/* /usr/bin/
 ```
 4. Optionally, create/edit configuration files
 ## Package Installation Example
-### puff
+### pinch
 ```
-puff htop
+pinch htop
 ```
 ### cd to srcdir
 ```
@@ -127,8 +127,8 @@ A: As of this moment at least, no you cannot. If you wish to add your own packag
 Q: How does drag handle dependencies?</br>
 A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies, you may use the wiff command.</br>
 </br>
-Q: Do I have to stash a package first in order for puff or wiff to work?</br>
-A: No. If you haven't stashed a package previously, puff or wiff will attempt to stash it for you.</br>
+Q: Do I have to stash a package first in order for pinch or wiff to work?</br>
+A: No. If you haven't stashed a package previously, pinch or wiff will attempt to stash it for you.</br>
 </br>
 Q: Is the drag package manager meant to be used with a specific distribution?</br>
 A: Although drag was created for Stone Linux (coming soon), it can be used practically on any distribution, or even LFS.</br>
