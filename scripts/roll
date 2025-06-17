@@ -1,0 +1,68 @@
+#!/bin/bash
+
+set -e
+
+ashtray=$DRAG_ROOT/var/cache/drag/ashtray
+
+if [[ "$EUID" -ne 0 ]]; then
+        echo "Please run drag commands with root privileges"
+        echo
+        exit 1
+elif [[ -z "$@" ]]; then
+        echo "You can't roll that!"
+        echo
+        exit 1
+else
+        cigs=""
+        for cig in "$@"; do
+                if [[ ! -d "$ashtray/$cig" ]]; then
+                        echo "$cig has not been pinched!"
+			pinch $cig
+                fi
+		srcdir=$ashtray/$cig/src
+		pkgdir=$ashtray/$cig/pkg
+		source $DRAG_ROOT/var/cache/drag/stash/$cig/PKGBUILD
+		cd $srcdir
+		for i in *; do
+			if [[ "${noextract[*]}" != *$i* ]]; then
+				case $i in
+					*.tar.gz|*.tgz)
+						tar xzf $i;;
+					*.tar.bz2|*.tar.zst|*.tar)
+						tar xf $i;;
+					*.tar.xz)
+						tar xJf $i;;
+					*.zip)
+						unzip $i;;
+					*.gz)
+						gzip -d $i;;
+					*.bz2)
+						bzip2 -d $i;;
+					*.xz)
+						unxz $i;;
+				esac
+			fi
+		done
+		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
+		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
+		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
+		if [ ${#pkgname[@]} == 1 ]; then
+			cd $srcdir
+			package
+		else
+			for i in ${pkgname[@]}; do
+				cd $srcdir
+				package_$i
+			done
+		fi
+                echo
+                echo "Rolled $cig"
+                echo
+                cigs="$cigs $cig,"
+        done
+        cigs="${cigs%%,}"
+        echo
+        echo "Rolled$cigs"
+        echo
+        exit 0
+fi
