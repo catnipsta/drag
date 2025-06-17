@@ -26,6 +26,15 @@ elif [[ -z "$@" ]]; then
 else
 	cigs=""
 	for cig in "$@"; do
+		chronic=false
+                if [ -f $DRAG_ROOT/etc/chronic ]; then
+                        while read -r ccig; do
+                                if [ $ccig == $cig ]; then
+                                        chronic=true
+                                fi
+                        done < $DRAG_ROOT/etc/chronic
+                fi
+		if [ $chronic == false ]; then
 		echo "Taking a drag..."
 		tmp1=$(mktemp)
 		tmp2=$(mktemp)
@@ -57,6 +66,7 @@ else
 			exit 1
 		fi
 		rm $tmp1 $tmp2
+		fi
 	done
 	cigs="${cigs%%,}"
 	echo
