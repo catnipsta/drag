@@ -1,0 +1,171 @@
+#!/bin/bash
+
+set -e
+
+stash=$DRAG_ROOT/var/cache/drag/stash
+ashtray=$DRAG_ROOT/var/cache/drag/ashtray
+
+if [[ "$EUID" -ne 0 ]]; then
+	echo "Please run drag commands with root privileges"
+	echo
+	exit 1
+elif [[ -z "$@" ]]; then
+	echo "You can't pinch that!"
+	echo
+	exit 1
+else
+	cigs=""
+	for cig in "$@"; do
+		if [ $cig == ca-certificates ]; then
+			echo "Pinching ca-certificates..."
+			wget -qO ca-certificates.crt https://curl.se/ca/cacert.pem
+			wget -qO certsha256sum       https://curl.se/ca/cacert.pem.sha256
+			actual=$(sha256sum ca-certificates.crt)
+			actual=${actual%%\ *}
+			if [[ "$(cat certsha256sum)" == *$actual* ]]; then
+				echo "Verified ca-certificates!"
+				echo
+				mv ca-certificates.crt $DRAG_ROOT/etc/ssl/certs/
+				rm certsha256sum
+				cigs="$cigs $cig,"
+			else
+				echo "CHECKSUM VALIDATION FAILED FOR ca-certificates!"
+				echo
+				exit 1
+			fi
+		else
+		if [ ! -d $stash/$cig ]; then
+			echo "$cig has not been stashed!"
+			echo "Attempting to stash $cig..."
+			stash $cig
+		fi
+		source $stash/$cig/PKGBUILD
+		rm -rf $ashtray/$cig/
+		mkdir -p $ashtray/$cig/src
+		echo "$pkgver" | tee $ashtray/$cig/ver
+		for i in "${!source[@]}"; do
+			if [[ ("${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"*) && "${source[$i]}" != *"raw.git"* ]]; then
+				if [[ ${source[$i]} == *::* ]]; then
+					name="${source[$i]%%::*}"
+				else
+					name="${source[$i]##*/}"
+					name="${name%%.git*}"
+					name="${name%%\#*}"
+				fi
+				url="${source[$i]#*git+}"
+				commit="${url##*commit=}"
+				commit="${commit%%\&*}"
+				commit="${commit%%\?*}"
+				tag="${url##*tag=}"
+				tag="${tag%%\&*}"
+				tag="${tag%%\?*}"
+				branch="${url##*branch=}"
+				branch="${branch%%\&*}"
+				branch="${branch%%\?*}"
+				url="${url%%\?*}"
+				url="${url%%#*}"
+				if [[ ${source[$i]} == *commit=* ]]; then
+					git clone $url $ashtray/$cig/src/$name
+					git -C $ashtray/$cig/src/$name checkout $commit
+					echo "Skipping GPG Verification, using commit."
+					echo
+				elif [[ ${source[$i]} == *tag=* ]]; then
+					git clone --branch $tag $url $ashtray/$cig/src/$name || git clone $url $ashtray/$cig/src/$name
+					key=$(cd $ashtray/$cig/src/$name && git tag -v $tag 2>&1 | grep "RSA key") || key=joemama
+					key=${key##*key }
+					if [[ "${validpgpkeys[*]}" == *"$key"* ]]; then
+						echo "Verified GPG key for $name!"
+					elif [[ -z "${validpgpkeys[*]}" ]]; then
+						echo
+						echo "SKIPPING GPG VERIFICATION FOR $name!"
+						echo "BE WARNED!!!"
+						echo
+					else
+						echo "GPG VERIFICATION FAILED FOR $name!"
+						read -p "Continue anyway? [y/N] " choice
+						case $choice in
+							[yY])
+							;;
+							*)
+							exit 1;;
+						esac
+						echo
+					fi
+				elif [[ ${source[$i]} == *branch=* ]]; then
+					git clone --branch $branch $url $ashtray/$cig/src/$name || git clone $url $ashtray/$cig/src/$name
+					echo
+					echo "SKIPPING GPG VERIFICATION FOR $name!"
+					echo "BE WARNED!!!"
+					echo
+				else
+					git clone $url $ashtray/$cig/src/$name
+					echo
+					echo "SKIPPING GPG VERIFICATION FOR $name!"
+					echo "BE WARNED!!!"
+					echo
+				fi
+			else
+				if [[ ${source[$i]} == *::* ]]; then
+					name=${source[$i]%%::*}
+				else
+					name=${source[$i]##*/}
+				fi
+				if [[ ${source[$i]} == *"http://"* || ${source[$i]} == *"https://"* || ${source[$i]} == *"ftp://"* ]]; then
+					echo "Downloading $name"
+				else
+					cp $stash/$cig/$name $ashtray/$cig/src/$name
+				fi
+				if [[ "${source[$i]}" == *"http://"* || ${source[$i]} == *"https://"* ]]; then
+					wget -q -O $ashtray/$cig/src/$name "http${source[$i]#*http}"
+				elif [[ ${source[$i]} == *"ftp://"* ]]; then
+					wget -q -O $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
+				fi
+				if [[ -n $sha256sums ]]; then
+					actual=$(sha256sum $ashtray/$cig/src/$name)
+					expected=${sha256sums[$i]}
+				elif [[ -n $sha512sums ]]; then
+					actual=$(sha512sum $ashtray/$cig/src/$name)
+					expected=${sha512sums[$i]}
+				elif [[ -n $bd2sums ]]; then
+					actual=$(bd2sum $ashtray/$cig/src/$name)
+					expected=${bd2sums[$i]}
+				elif [[ -n $md5sums ]]; then
+					actual=$(md5sum $ashtray/$cig/src/$name)
+					expected=${md5sums[$i]}
+				else
+					actual=""
+					expected="SKIP"
+					echo
+					echo "SKIPPING CHECKSUM FOR $name!"
+					echo "BE WARNED!"
+					echo
+				fi
+				actual=${actual%%\ *}
+				if [[ $actual == $expected ]]; then
+					echo "Checksum matched for $name"
+				elif [[ $expected == SKIP ]]; then
+					echo "Checksum skipped for $name"
+				else
+					echo "CHECKSUM VALIDATION FAILED FOR $name"
+					echo "Expected: $expected"
+					echo "Actual:   $actual"
+					read -p "Continue anyway? [y/N] " choice
+					case $choice in
+						[yY])
+						;;
+						*)
+						exit 1;;
+					esac
+					echo
+				fi
+			fi
+		done
+		cigs="$cigs $cig,"
+		fi
+	done
+	cigs="${cigs%%,}"
+	echo
+	echo "Pinched$cigs"
+	echo
+	exit 0
+fi

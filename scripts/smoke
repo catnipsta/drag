@@ -15,9 +15,9 @@ elif [[ $# != 1 ]]; then
 else
 	cig=$1
 	if [[ ! -d "$ashtray/$cig" ]]; then
-		echo "$cig has not been puffed!"
-		echo "Attempting to puff on $cig..."
-		puff $cig
+		echo "$cig has not been pinched!"
+		echo "Attempting to pinch $cig..."
+		pinch $cig
 		exit 1
 	elif [[ -z $(ls $ashtray/$cig/pkg) ]]; then
 		echo "$cig's pkgdir is empty!"
