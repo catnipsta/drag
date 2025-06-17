@@ -22,27 +22,6 @@ else
 		srcdir=$ashtray/$cig/src
 		pkgdir=$ashtray/$cig/pkg
 		source $DRAG_ROOT/var/cache/drag/stash/$cig/PKGBUILD
-		cd $srcdir
-		for i in *; do
-			if [[ "${noextract[*]}" != *$i* ]]; then
-				case $i in
-					*.tar.gz|*.tgz)
-						tar xzf $i;;
-					*.tar.bz2|*.tar.zst|*.tar)
-						tar xf $i;;
-					*.tar.xz)
-						tar xJf $i;;
-					*.zip)
-						unzip $i;;
-					*.gz)
-						gzip -d $i;;
-					*.bz2)
-						bzip2 -d $i;;
-					*.xz)
-						unxz $i;;
-				esac
-			fi
-		done
 		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
 		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
 		if declare -f check   > /dev/null; then cd $srcdir;   check; fi

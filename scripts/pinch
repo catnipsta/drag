@@ -160,6 +160,27 @@ else
 				fi
 			fi
 		done
+		cd $ashtray/$cig/src
+		for i in *; do
+                        if [[ "${noextract[*]}" != *$i* ]]; then
+                                case $i in
+                                        *.tar.gz|*.tgz)
+                                                tar xzf $i;;
+                                        *.tar.bz2|*.tar.zst|*.tar)
+                                                tar xf $i;;
+                                        *.tar.xz)
+                                                tar xJf $i;;
+                                        *.zip)
+                                                unzip $i;;
+                                        *.gz)
+                                                gzip -d $i;;
+                                        *.bz2)
+                                                bzip2 -d $i;;
+                                        *.xz)
+                                                unxz $i;;
+                                esac
+                        fi
+                done
 		cigs="$cigs $cig,"
 		fi
 	done
