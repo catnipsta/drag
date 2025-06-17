@@ -48,7 +48,7 @@ View current stash and smoked packages.</br>
   </tr>
   <tr>
     <td>/etc/chronic</td>
-    <td>List of packages you wish to be ignored by hotbox</td>
+    <td>List of packages you wish to be ignored by hotbox and stash</td>
   </tr>
 </table>
 
@@ -64,7 +64,7 @@ export CXXFLAGS="$CFLAGS"
 ```
 ### chronic
 /etc/chronic</br>
-You may list packages in here you wish to be ignored by hotbox</br>
+You may list packages in here you wish to be ignored by hotbox and stash</br>
 Example:
 ```
 linux
