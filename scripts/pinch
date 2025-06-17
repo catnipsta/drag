@@ -104,6 +104,11 @@ else
 					echo "BE WARNED!!!"
 					echo
 				fi
+			elif [[ "${source[$i]}" == *hg+* ]]; then
+				echo "Mercurial repos are not supported by drag!"
+				echo "You may manually download: ${source[$i]}"
+				echo
+				exit 1
 			else
 				if [[ ${source[$i]} == *::* ]]; then
 					name=${source[$i]%%::*}
