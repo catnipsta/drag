@@ -110,8 +110,6 @@ else
 				else
 					name=${source[$i]##*/}
 				fi
-				name=${name%%#*}
-				name=${name%%\?*}
 				if [[ ${source[$i]} == *"http://"* || ${source[$i]} == *"https://"* || ${source[$i]} == *"ftp://"* ]]; then
 					echo "Downloading $name"
 				else
