@@ -50,7 +50,8 @@ else
 				else
 					name="${source[$i]##*/}"
 					name="${name%%.git*}"
-					name="${name%%\#*}"
+					name="${name%%#*}"
+					name="${name%%\?*}"
 				fi
 				url="${source[$i]#*git+}"
 				commit="${url##*commit=}"
