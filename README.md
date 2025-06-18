@@ -6,25 +6,29 @@ Utilizes Arch's repo + AUR for wide range of package support.
 Update your stash by running without any parameters,</br>
 ```stash```</br>
 or update/add select packages to your stash by passing them as parameters.</br>
-```stash htop vi```
+```stash htop```
 ### pinch
 Download the source files listed in the PKGBUILDs for select packages.</br>
-```pinch htop vi```
+```pinch htop```
+### roll
+Compile packages using the PKGBUILD's instructions</br>
+Keep in mind, you can edit and/or create your own PKGBUILDs.</br>
+```roll htop```
 ### smoke
-Tracks installed files and version of package.</br>
-You must have run 'make install' or similar with DESTDIR set to the pkgdir before running.</br>
-You must pass exactly one argument: the name of the package being installed.</br>
+Tracks installed files and version of packages.</br>
+Note: You must install the package to it's pkgdir before running smoke.</br>
+      This can be done either automatically by running roll or manually by compiling and setting DESTDIR to your package's pkgdir.</br>
 ```smoke htop```
 ### stub
 Uninstall select packages.</br>
-```stub htop vi```
+```stub htop```
 ### hotbox
 Lists out of date packages.</br>
 ```hotbox```
 ### wiff
 View information about select packages.</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
-```wiff htop vi```
+```wiff htop```
 ### drags
 View current stash and smoked packages.</br>
 ```drags```
