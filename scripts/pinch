@@ -67,7 +67,7 @@ else
 				url="${url%%#*}"
 				if [[ ${source[$i]} == *commit=* ]]; then
 					git clone $url $ashtray/$cig/src/$name
-					git -C $ashtray/$cig/src/$name checkout $commit
+					git -C $ashtray/$cig/src/$name cherry-pick $commit
 					echo "Skipping GPG Verification, using commit."
 					echo
 				elif [[ ${source[$i]} == *tag=* ]]; then
@@ -88,6 +88,7 @@ else
 							[yY])
 							;;
 							*)
+							rm -rf $ashtray/$cig/src/$name
 							exit 1;;
 						esac
 						echo
@@ -160,6 +161,7 @@ else
 						[yY])
 						;;
 						*)
+						rm -rf $ashtray/$cig/src/$name
 						exit 1;;
 					esac
 					echo
