@@ -135,4 +135,4 @@ Q: Do I have to stash a package first in order for pinch or wiff to work?</br>
 A: No. If you haven't stashed a package previously, pinch or wiff will attempt to stash it for you.</br>
 </br>
 Q: Is the drag package manager meant to be used with a specific distribution?</br>
-A: Although drag was created for Stone Linux (coming soon), it can be used practically on any distribution, or even LFS.</br>
+A: Although drag was created for Wispix (coming soon), it can be used practically on any distribution, or even LFS.</br>
