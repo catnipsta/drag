@@ -35,15 +35,15 @@ View current stash and smoked packages.</br>
 ## Common Files and Directories
 <table>
   <tr>
-    <td>/var/cache/drag/stash</td>
+    <td>$HOME/.cache/drag/stash</td>
     <td>Your stash of PKGBUILDs</td>
   </tr>
   <tr>
-    <td>/var/cache/drag/ashtray/(package)/src</td>
+    <td>$HOME/.cache/drag/ashtray/(package)/src</td>
     <td>srcdir - where source files are downloaded</td>
   </tr>
   <tr>
-    <td>/var/cache/drag/ashtray/(package)/pkg</td>
+    <td>$HOME/.cache/drag/ashtray/(package)/pkg</td>
     <td>pkgdir - where packages are compiled to</td>
   </tr>
   <tr>
