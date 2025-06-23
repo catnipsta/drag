@@ -1,12 +1,10 @@
 #!/bin/bash
 
-if [ -z "$(ls $DRAG_ROOT/var/cache/drag/stash/)" ]; then
+if [ -z "$(ls $HOME/.cache/drag/stash/)" ]; then
         echo "You're stash is empty!"
-        echo "You could add vi to your stash by running:"
-        echo "stash vi"
 else
 	echo "Stash:"
-        cigs=$(find $DRAG_ROOT/var/cache/drag/stash/* -maxdepth 0 -exec basename {} \;)
+        cigs=$(find $HOME/.cache/drag/stash/* -maxdepth 0 -exec basename {} \;)
         echo $cigs
 fi
 echo

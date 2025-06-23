@@ -1,20 +1,10 @@
 #!/bin/bash
 
-stash=$DRAG_ROOT/var/cache/drag/stash
-
-if [[ "$EUID" -ne 0 ]]; then
-	echo "Drag commands must be run with root privileges."
-	echo
-	exit 1
-fi
+stash=$HOME/.cache/drag/stash
 
 mkdir -p $stash
 
-if [[ -z "$@" && -z "$(ls $stash)" ]]; then
-        echo "You haven't stashed anything yet. Probably for the best."
-	echo
-	exit 1
-elif [[ -z "$@" ]]; then
+if [[ -z "$@" ]]; then
 	for cig in $stash/* $DRAG_ROOT/var/lib/drag/smoked/*; do
 		cig="${cig##*/}"
 		if [[ ! "$cigs" =~ "$cig" ]]; then

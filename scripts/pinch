@@ -2,14 +2,10 @@
 
 set -e
 
-stash=$DRAG_ROOT/var/cache/drag/stash
-ashtray=$DRAG_ROOT/var/cache/drag/ashtray
+stash=$HOME/.cache/drag/stash
+ashtray=$HOME/.cache/drag/ashtray
 
-if [[ "$EUID" -ne 0 ]]; then
-	echo "Please run drag commands with root privileges"
-	echo
-	exit 1
-elif [[ -z "$@" ]]; then
+if [[ -z "$@" ]]; then
 	echo "You can't pinch that!"
 	echo
 	exit 1
@@ -18,6 +14,8 @@ else
 	for cig in "$@"; do
 		if [ $cig == ca-certificates ]; then
 			echo "Pinching ca-certificates..."
+			mkdir -p $ashtray/$cig/src
+			cd $ashtray/$cig/src
 			wget -qO ca-certificates.crt https://curl.se/ca/cacert.pem
 			wget -qO certsha256sum       https://curl.se/ca/cacert.pem.sha256
 			actual=$(sha256sum ca-certificates.crt)
@@ -25,7 +23,7 @@ else
 			if [[ "$(cat certsha256sum)" == *$actual* ]]; then
 				echo "Verified ca-certificates!"
 				echo
-				mv ca-certificates.crt $DRAG_ROOT/etc/ssl/certs/
+				su -c "mv ca-certificates.crt $DRAG_ROOT/etc/ssl/certs/"
 				rm certsha256sum
 				cigs="$cigs $cig,"
 			else

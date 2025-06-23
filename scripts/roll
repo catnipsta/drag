@@ -2,13 +2,9 @@
 
 set -e
 
-ashtray=$DRAG_ROOT/var/cache/drag/ashtray
+ashtray=$HOME/.cache/drag/ashtray
 
-if [[ "$EUID" -ne 0 ]]; then
-        echo "Please run drag commands with root privileges"
-        echo
-        exit 1
-elif [[ -z "$@" ]]; then
+if [[ -z "$@" ]]; then
         echo "You can't roll that!"
         echo
         exit 1
@@ -19,19 +15,19 @@ else
                         echo "$cig has not been pinched!"
 			pinch $cig
                 fi
-		srcdir=$ashtray/$cig/src
-		pkgdir=$ashtray/$cig/pkg
-		source $DRAG_ROOT/var/cache/drag/stash/$cig/PKGBUILD
+		export srcdir=$ashtray/$cig/src
+		export pkgdir=$ashtray/$cig/pkg
+		source $HOME/.cache/drag/stash/$cig/PKGBUILD
 		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
 		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
 		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
 		if [ ${#pkgname[@]} == 1 ]; then
 			cd $srcdir
-			package
+			su -c "source $HOME/.cache/drag/stash/$cig/PKGBUILD && package"
 		else
 			for i in ${pkgname[@]}; do
 				cd $srcdir
-				package_$i
+				su -c "source $HOME/.cache/drag/stash/$cig/PKGBUILD && package$i"
 			done
 		fi
                 echo
