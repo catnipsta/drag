@@ -21,7 +21,6 @@ else
                 	elif command -v su >/dev/null 2>&1; then
                         	SUDO=su
                 	fi
-                	export DRAG_ROOT ashtray cig
 	                $SUDO bash -c "
 			if [[ -f '$smoked/$cig/clutter' ]]; then
 				while IFS= read -r file; do

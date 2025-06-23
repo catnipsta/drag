@@ -21,13 +21,28 @@ else
 		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
 		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
 		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
+		if command -v sudo >/dev/null 2>&1; then
+                        SUDO=sudo
+                elif command -v doas >/dev/null 2>&1; then
+                        SUDO=doas
+                elif command -v su >/dev/null 2>&1; then
+                        SUDO=su
+                fi
 		if [ ${#pkgname[@]} == 1 ]; then
 			cd $srcdir
-			su -c "source $HOME/.cache/drag/stash/$cig/PKGBUILD && package"
+			$SUDO bash -c "
+			export srcdir='$srcdir'
+			export pkgdir='$pkgdir'
+			source $HOME/.cache/drag/stash/$cig/PKGBUILD
+			package"
 		else
 			for i in ${pkgname[@]}; do
 				cd $srcdir
-				su -c "source $HOME/.cache/drag/stash/$cig/PKGBUILD && package$i"
+				$SUDO bash -c "
+				export srcdir='$srcdir'
+				export pkgdir='$pkgdir'
+				source $HOME/.cache/drag/stash/$cig/PKGBUILD
+				package'$i'"
 			done
 		fi
                 echo
