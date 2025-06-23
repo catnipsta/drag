@@ -42,7 +42,7 @@ else
 				export srcdir='$srcdir'
 				export pkgdir='$pkgdir'
 				source $HOME/.cache/drag/stash/$cig/PKGBUILD
-				package'$i'"
+				package_'$i'"
 			done
 		fi
                 echo
