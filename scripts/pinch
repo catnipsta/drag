@@ -42,7 +42,7 @@ else
 				exit 1
 			fi
 		else
-		if [ ! -d $stash/$cig ]; then
+		if [ ! -f $stash/$cig/PKGBUILD ]; then
 			echo "$cig has not been stashed!"
 			echo "Attempting to stash $cig..."
 			stash $cig
