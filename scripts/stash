@@ -1,20 +1,15 @@
 #!/bin/bash
 
+set -e
+
 stash=$HOME/.cache/drag/stash
 
 mkdir -p $stash
 
 if [[ -z "$@" ]]; then
-        echo "Stashing previous..."
+        echo "You can't stash that!"
 	echo
-	for cig in $stash/* $DRAG_ROOT/var/lib/drag/smoked/*; do
-		cig="${cig##*/}"
-		if [[ ! "$cigs" =~ "$cig" ]]; then
-			 cigs+="$cig "
-		fi
-	done
-	stash $cigs
-	exit 0
+	exit 1
 else
 	cigs=""
 	for cig in "$@"; do
@@ -53,20 +48,7 @@ else
 		rm $tmp1 $tmp2
 	done
 	cigs="${cigs%%,}"
-	if command -v vi >/dev/null 2>&1; then
-		EDITOR=vi
-	elif command -v vim >/dev/null 2>&1; then
-		EDITOR=vim
-	elif command -v nvim >/dev/null 2>&1; then
-		EDITOR=nvim
-	elif command -v emacs >/dev/null 2>&1; then
-		EDITOR=emacs
-	elif command -v nano >/dev/null 2>&1; then
-		EDITOR=nano
-	fi
-	for cig in "$@"; do
-		$EDITOR $stash/$cig/PKGBUILD
-	done
+	snoop $@
 	echo
 	echo "Stashed$cigs"
 	echo

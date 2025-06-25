@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+stash=$HOME/.cache/drag/stash
+
+if [[ -z "$@" ]]; then
+        echo "You can't snoop that!"
+        echo
+	exit 1
+else
+	if command -v vi >/dev/null 2>&1; then
+                EDITOR=vi
+        elif command -v vim >/dev/null 2>&1; then
+                EDITOR=vim
+        elif command -v nvim >/dev/null 2>&1; then
+                EDITOR=nvim
+        elif command -v emacs >/dev/null 2>&1; then
+                EDITOR=emacs
+        elif command -v nano >/dev/null 2>&1; then
+                EDITOR=nano
+        fi
+	cigs=""
+        for cig in "$@"; do
+                $EDITOR $stash/$cig/PKGBUILD
+		cigs="$cigs $cig,"
+        done
+	cigs="${cigs%%,}"
+	echo
+	echo "Snooped$cigs"
+	echo
+	exit 0
+fi

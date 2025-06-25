@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 smoked=$DRAG_ROOT/var/lib/drag/smoked
 
 if [[ -z "$@" ]]; then
