@@ -12,7 +12,7 @@ else
         cigs=""
         for cig in "$@"; do
                 if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
-                        echo "$cig's pkgdir is empty!"
+                        echo "$cig has not been rolled!"
 			echo "Attempting to roll $cig..."
 			roll $cig
                         echo
