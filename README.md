@@ -3,10 +3,11 @@ Source-based package manager written in bash for Linux distributions.
 Utilizes Arch's repo + AUR for wide range of package support.
 ## commands:
 ### stash
-Update your stash by running without any parameters,</br>
-```stash```</br>
-or update/add select packages to your stash by passing them as parameters.</br>
+Add PKGBUILDS to your stash</br>
 ```stash htop```
+### snoop
+Edit PKGBUILDS in your stash</br>
+```snoop htop```
 ### pinch
 Download the source files listed in the PKGBUILDs for select packages.</br>
 ```pinch htop```
