@@ -5,6 +5,8 @@ stash=$HOME/.cache/drag/stash
 mkdir -p $stash
 
 if [[ -z "$@" ]]; then
+        echo "Stashing previous..."
+	echo
 	for cig in $stash/* $DRAG_ROOT/var/lib/drag/smoked/*; do
 		cig="${cig##*/}"
 		if [[ ! "$cigs" =~ "$cig" ]]; then
@@ -16,15 +18,6 @@ if [[ -z "$@" ]]; then
 else
 	cigs=""
 	for cig in "$@"; do
-		chronic=false
-                if [ -f $DRAG_ROOT/etc/chronic ]; then
-                        while read -r ccig; do
-                                if [ $ccig == $cig ]; then
-                                        chronic=true
-                                fi
-                        done < $DRAG_ROOT/etc/chronic
-                fi
-		if [ $chronic == false ]; then
 		echo "Taking a drag..."
 		tmp1=$(mktemp)
 		tmp2=$(mktemp)
@@ -58,9 +51,22 @@ else
 			exit 1
 		fi
 		rm $tmp1 $tmp2
-		fi
 	done
 	cigs="${cigs%%,}"
+	if command -v vi >/dev/null 2>&1; then
+		EDITOR=vi
+	elif command -v vim >/dev/null 2>&1; then
+		EDITOR=vim
+	elif command -v nvim >/dev/null 2>&1; then
+		EDITOR=nvim
+	elif command -v emacs >/dev/null 2>&1; then
+		EDITOR=emacs
+	elif command -v nano >/dev/null 2>&1; then
+		EDITOR=nano
+	fi
+	for cig in "$@"; do
+		$EDITOR $stash/$cig/PKGBUILD
+	done
 	echo
 	echo "Stashed$cigs"
 	echo
