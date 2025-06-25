@@ -22,9 +22,6 @@ Note: You must install the package to it's pkgdir before running smoke.</br>
 ### stub
 Uninstall select packages.</br>
 ```stub htop```
-### hotbox
-Lists out of date packages.</br>
-```hotbox```
 ### wiff
 View information about select packages.</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
@@ -50,10 +47,6 @@ View current stash and smoked packages.</br>
     <td>/var/lib/drag/smoked</td>
     <td>Tracking for smoked packages</td>
   </tr>
-  <tr>
-    <td>/etc/chronic</td>
-    <td>List of packages you wish to be ignored by hotbox and stash</td>
-  </tr>
 </table>
 
 ## Configuration
@@ -66,20 +59,10 @@ export MAKEFLAGS="-j$(nproc)
 export CFLAGS="-march=native -O2 -pipe"
 export CXXFLAGS="$CFLAGS"
 ```
-### chronic
-/etc/chronic</br>
-You may list packages in here you wish to be ignored by hotbox and stash</br>
-Example:
-```
-linux
-binutils
-glibc
-gcc
-```
 ## Installation
 There are two methods of installation:
   1. Installing to existing systems
-  2. Installing to system on mount point (not chroot)
+  2. Installing to system on mount point (not chrooted)
 </br>
 If you are choosing the second option, you must set the DRAG_ROOT variable, place the scripts and config files under your mount point's file system, and add the mount point's /usr/bin to your PATH variable.</br>
 If you are installing to a system on a mount point, setting the DRAG_ROOT variable should look something like:
