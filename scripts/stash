@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 stash=$HOME/.cache/drag/stash
 
 mkdir -p $stash

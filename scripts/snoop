@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 stash=$HOME/.cache/drag/stash
 
 if [[ -z "$@" ]]; then
@@ -22,6 +20,7 @@ else
         fi
 	cigs=""
         for cig in "$@"; do
+		mkdir -p $stash/$cig
                 $EDITOR $stash/$cig/PKGBUILD
 		cigs="$cigs $cig,"
         done
