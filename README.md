@@ -1,6 +1,6 @@
 # drag (EARLY BETA)
 Source-based package manager written in bash for Linux distributions.
-Utilizes Arch's repo + AUR for wide range of package support.
+Utilizes Arch's repos + AUR to maximize package support.
 ## commands:
 ### stash
 Add PKGBUILDS to your stash</br>
