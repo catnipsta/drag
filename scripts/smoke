@@ -11,6 +11,10 @@ if [[ -z "$@" ]]; then
 else
         cigs=""
         for cig in "$@"; do
+		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
+			echo "$cig has already been smoked"
+			echo
+		else
                 if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
                         echo "$cig has not been rolled!"
 			echo "Attempting to roll $cig..."
@@ -37,6 +41,7 @@ rsync -a --keep-dirlinks '$ashtray/$cig/pkg/' '$DRAG_ROOT/'
                 echo "Smoked $cig"
                 echo
                 cigs="$cigs $cig,"
+		fi
         done
         cigs="${cigs%%,}"
         echo
