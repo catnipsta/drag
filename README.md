@@ -1,4 +1,4 @@
-# drag (EARLY BETA)
+# drag
 Source-based package manager written in bash for Linux distributions.
 Utilizes Arch's repos + AUR to maximize package support.
 ## commands:
@@ -113,10 +113,10 @@ Q: Can I add my own repositories?</br>
 A: As of this moment at least, no you cannot. If you wish to add your own packages though, you may manually place them in the stash directory.</br>
 </br>
 Q: How does drag handle dependencies?</br>
-A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies, you may use the wiff command.</br>
+A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies provided by Arch Linux, you may use the wiff command.</br>
 </br>
-Q: Do I have to stash a package first in order for pinch or wiff to work?</br>
-A: No. If you haven't stashed a package previously, pinch or wiff will attempt to stash it for you.</br>
+Q: Do I have to stash a package first in order for pinch, wiff, smoke, etc to work?</br>
+A: No. If you haven't stashed a package previously, commands will attempt to stash it for you.</br>
 </br>
 Q: Is the drag package manager meant to be used with a specific distribution?</br>
-A: Although drag was created for Wispix (coming soon), it can be used practically on any distribution, or even LFS.</br>
+A: Although drag was created for Whispix, it can be used practically on any distribution, or even LFS.</br>
