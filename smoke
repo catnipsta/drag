@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+
+ashtray=$HOME/.cache/drag/ashtray
+
+if [[ -z "$@" ]]; then
+        echo "You can't smoke that!"
+        echo
+        exit 1
+else
+        cigs=""
+        for cig in "$@"; do
+		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
+			echo "$cig has already been smoked"
+			echo
+		else
+                if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
+                        echo "$cig has not been rolled!"
+			echo "Attempting to roll $cig..."
+			roll $cig
+                        echo
+                fi
+		if command -v sudo >/dev/null 2>&1; then
+			SUDO=sudo
+		elif command -v doas >/dev/null 2>&1; then
+			SUDO=doas
+		elif command -v su >/dev/null 2>&1; then
+			SUDO=su
+		fi
+		if [ $EUID == 0 ]; then
+			SUDO=
+		fi
+		export DRAG_ROOT ashtray cig
+		$SUDO bash -c "
+mkdir -p '$DRAG_ROOT/var/lib/drag/smoked/$cig'
+cp '$ashtray/$cig/ver' '$DRAG_ROOT/var/lib/drag/smoked/$cig/ver'
+for file in \$(find '$ashtray/$cig'/pkg/* \( -type f -o -type l -o -type s -o -type p \)); do
+	echo \"\${file#*/pkg}\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
+done
+rsync -a --keep-dirlinks '$ashtray/$cig/pkg/' '$DRAG_ROOT/'
+"
+                echo
+                echo "Smoked $cig"
+                echo
+                cigs="$cigs $cig,"
+		fi
+        done
+        cigs="${cigs%%,}"
+        echo
+	echo "Smoked$cigs"
+        echo
+        exit 0
+fi
