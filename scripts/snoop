@@ -7,16 +7,16 @@ if [[ -z "$@" ]]; then
         echo
 	exit 1
 else
-	if command -v vi >/dev/null 2>&1; then
-                EDITOR=vi
+        if command -v nano >/dev/null 2>&1; then
+                EDITOR=nano
         elif command -v vim >/dev/null 2>&1; then
                 EDITOR=vim
         elif command -v nvim >/dev/null 2>&1; then
                 EDITOR=nvim
         elif command -v emacs >/dev/null 2>&1; then
                 EDITOR=emacs
-        elif command -v nano >/dev/null 2>&1; then
-                EDITOR=nano
+	elif command -v vi >/dev/null 2>&1; then
+                EDITOR=vi
         fi
 	cigs=""
         for cig in "$@"; do

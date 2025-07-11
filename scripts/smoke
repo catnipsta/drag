@@ -28,6 +28,9 @@ else
 		elif command -v su >/dev/null 2>&1; then
 			SUDO=su
 		fi
+		if [ $EUID == 0 ]; then
+			SUDO=
+		fi
 		export DRAG_ROOT ashtray cig
 		$SUDO bash -c "
 mkdir -p '$DRAG_ROOT/var/lib/drag/smoked/$cig'
@@ -45,7 +48,7 @@ rsync -a --keep-dirlinks '$ashtray/$cig/pkg/' '$DRAG_ROOT/'
         done
         cigs="${cigs%%,}"
         echo
-        echo "Smoked$cigs"
+	echo "Smoked$cigs"
         echo
         exit 0
 fi
