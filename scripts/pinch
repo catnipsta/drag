@@ -131,9 +131,9 @@ else
 					cp $stash/$cig/$name $ashtray/$cig/src/$name
 				fi
 				if [[ "${source[$i]}" == *"http://"* || ${source[$i]} == *"https://"* ]]; then
-					wget -q -O $ashtray/$cig/src/$name "http${source[$i]#*http}"
+					wget -O $ashtray/$cig/src/$name "http${source[$i]#*http}"
 				elif [[ ${source[$i]} == *"ftp://"* ]]; then
-					wget -q -O $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
+					wget -O $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
 				fi
 				if [[ -n $sha256sums ]]; then
 					actual=$(sha256sum $ashtray/$cig/src/$name)
