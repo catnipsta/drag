@@ -26,7 +26,7 @@ else
 		elif command -v doas >/dev/null 2>&1; then
 			SUDO=doas
 		elif command -v su >/dev/null 2>&1; then
-			SUDO=su
+			SUDO="su root"
 		fi
 		if [ $EUID == 0 ]; then
 			SUDO=
