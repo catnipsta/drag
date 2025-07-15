@@ -14,8 +14,8 @@ else
 		echo "Taking a drag..."
 		tmp1=$(mktemp)
 		tmp2=$(mktemp)
-		wget -q -O $tmp1 https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
-		wget -q -O $tmp2 https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
+		wget -O $tmp1 https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
+		wget -O $tmp2 https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
 		if file $tmp1 | grep -q "gzip"; then
 			echo "Stashing $cig from Arch's repo..."
 			cigs="$cigs $cig,"
@@ -25,7 +25,7 @@ else
 			tar -xzf $tmp1 -C $stash/
 			mv $stash/$cig-main $stash/$cig
 			sed -i 's/arch-meson/meson/g' $stash/$cig/PKGBUILD
-		elif $(file $tmp2 | grep -q "gzip"); then
+		elif file $tmp2 | grep -q "gzip"; then
 			echo "Stashing $cig from the AUR..."
 			cigs="$cigs $cig,"
 			if [ -d $stash/$cig ]; then
