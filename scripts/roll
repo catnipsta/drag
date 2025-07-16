@@ -28,7 +28,7 @@ else
                 elif command -v su >/dev/null 2>&1; then
                         SUDO="su root"
                 fi
-		if [ $EUID == 0; then
+		if [ $EUID == 0 ]; then
 			SUDO=
 		fi
 		if [ ${#pkgname[@]} == 1 ]; then
