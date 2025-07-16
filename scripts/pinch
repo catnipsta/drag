@@ -182,7 +182,7 @@ else
                                 case $i in
                                         *.tar.gz|*.tgz)
                                                 tar xzf $i;;
-                                        *.tar.bz2|*.tar.zst|*.tar)
+                                        *.tar.bz2|*.tar.zst|*.tar|*.tbz)
                                                 tar xf $i;;
                                         *.tar.xz)
                                                 tar xJf $i;;
