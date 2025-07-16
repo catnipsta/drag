@@ -12,6 +12,7 @@ else
         cigs=""
         for cig in "$@"; do
 		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
+			echo
 			echo "$cig has already been smoked"
 			echo
 		else
