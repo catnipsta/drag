@@ -28,7 +28,7 @@ else
 		                elif command -v doas >/dev/null 2>&1; then
 		                        SUDO=doas
 		                elif command -v su >/dev/null 2>&1; then
-                        		SUDO=su
+                        		SUDO="su root"
 		                fi 
 				export DRAG_ROOT
 				$SUDO bash -c "
@@ -47,9 +47,20 @@ else
 			echo "Attempting to stash $cig..."
 			stash $cig
 		fi
-		source $stash/$cig/PKGBUILD
+		if [ -d $ashtray/$cig/pkg ]; then
+			if command -v sudo >/dev/null 2>&1; then
+	                        SUDO=sudo
+	                elif command -v doas >/dev/null 2>&1; then
+	                        SUDO=doas
+	                elif command -v su >/dev/null 2>&1; then
+                       		SUDO="su root"
+	                fi 
+			export DRAG_ROOT ashtray cig
+			$SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
+		fi
 		rm -rf $ashtray/$cig/
 		mkdir -p $ashtray/$cig/src
+		source $stash/$cig/PKGBUILD
 		echo "$pkgver" | tee $ashtray/$cig/ver
 		for i in "${!source[@]}"; do
 			if [[ ("${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"*) && "${source[$i]}" != *".git"*"/"* ]]; then
@@ -96,7 +107,7 @@ else
 							[yY])
 							;;
 							*)
-							rm -rf $ashtray/$cig/src/$name
+							rm -rf $ashtray/$cig/src
 							exit 1;;
 						esac
 						echo
@@ -169,7 +180,7 @@ else
 						[yY])
 						;;
 						*)
-						rm -rf $ashtray/$cig/src/$name
+						rm -rf $ashtray/$cig/src
 						exit 1;;
 					esac
 					echo

@@ -11,45 +11,70 @@ if [[ -z "$@" ]]; then
 else
         cigs=""
         for cig in "$@"; do
-		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
-			echo
-			echo "$cig has already been smoked"
-			echo
-		else
+                if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
+                        echo
+                        echo "$cig has already been smoked"
+                        echo
+                else
                 if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
                         echo "$cig has not been rolled!"
-			echo "Attempting to roll $cig..."
-			roll $cig
+                        echo "Attempting to roll $cig..."
+                        roll $cig
                         echo
                 fi
-		if command -v sudo >/dev/null 2>&1; then
-			SUDO=sudo
-		elif command -v doas >/dev/null 2>&1; then
-			SUDO=doas
-		elif command -v su >/dev/null 2>&1; then
-			SUDO="su root"
-		fi
-		if [ $EUID == 0 ]; then
-			SUDO=
-		fi
-		export DRAG_ROOT ashtray cig
-		$SUDO bash -c "
+                if command -v sudo >/dev/null 2>&1; then
+                        SUDO=sudo
+                elif command -v doas >/dev/null 2>&1; then
+                        SUDO=doas
+                elif command -v su >/dev/null 2>&1; then
+                        SUDO="su root"
+                fi
+                if [ $EUID == 0 ]; then
+                        SUDO=
+                fi
+
+choke() {
+        mkdir -p $DRAG_ROOT/var/lib/drag/smoked/$cig
+        cp $ashtray/$cig/ver $DRAG_ROOT/var/lib/drag/smoked/$cig/ver
+        for file in $(find $ashtray/$cig/pkg/* -type f -o -type l -o -type s -o -type p ); do
+                echo "${file#*/pkg}" >> $DRAG_ROOT/var/lib/drag/smoked/$cig/clutter
+        done
+        for file in "$(find $ashtray/$cig/pkg/*)"; do
+                mode=$(stat -c '%a' "$file")
+                file="${file#*/pkg}"
+                install -Dm$mode $ashtray/$cig/pkg$file $file
+        done
+}
+
+                export DRAG_ROOT ashtray cig
+                $SUDO bash -c "
 mkdir -p '$DRAG_ROOT/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '$DRAG_ROOT/var/lib/drag/smoked/$cig/ver'
-for file in \$(find '$ashtray/$cig'/pkg/* \( -type f -o -type l -o -type s -o -type p \)); do
-	echo \"\${file#*/pkg}\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
+for file in \$(find '$ashtray/$cig'/pkg/* \( -type f -o -type l -o -type s \)); do
+	mode=\$(stat -c %a \"\$file\")
+	file=\${file#*/pkg}
+	echo \"\$file\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
+	install -Dm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
 done
-rsync -a --keep-dirlinks '$ashtray/$cig/pkg/' '$DRAG_ROOT/'
 "
+
+#old rsync method
+#mkdir -p '$DRAG_ROOT/var/lib/drag/smoked/$cig'
+#cp '$ashtray/$cig/ver' '$DRAG_ROOT/var/lib/drag/smoked/$cig/ver'
+#for file in \$(find '$ashtray/$cig'/pkg/* \( -type f -o -type l -o -type s -o -type p \)); do
+#       echo \"\${file#*/pkg}\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
+#done
+#rsync -a --keep-dirlinks '$ashtray/$cig/pkg/' '$DRAG_ROOT/'
+
                 echo
                 echo "Smoked $cig"
                 echo
                 cigs="$cigs $cig,"
-		fi
+                fi
         done
         cigs="${cigs%%,}"
         echo
-	echo "Smoked$cigs"
+        echo "Smoked$cigs"
         echo
         exit 0
 fi
