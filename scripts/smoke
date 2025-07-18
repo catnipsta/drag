@@ -33,19 +33,6 @@ else
                         SUDO=
                 fi
 
-choke() {
-        mkdir -p $DRAG_ROOT/var/lib/drag/smoked/$cig
-        cp $ashtray/$cig/ver $DRAG_ROOT/var/lib/drag/smoked/$cig/ver
-        for file in $(find $ashtray/$cig/pkg/* -type f -o -type l -o -type s -o -type p ); do
-                echo "${file#*/pkg}" >> $DRAG_ROOT/var/lib/drag/smoked/$cig/clutter
-        done
-        for file in "$(find $ashtray/$cig/pkg/*)"; do
-                mode=$(stat -c '%a' "$file")
-                file="${file#*/pkg}"
-                install -Dm$mode $ashtray/$cig/pkg$file $file
-        done
-}
-
                 export DRAG_ROOT ashtray cig
                 $SUDO bash -c "
 mkdir -p '$DRAG_ROOT/var/lib/drag/smoked/$cig'
