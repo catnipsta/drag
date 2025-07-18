@@ -48,6 +48,7 @@ else
 				package_'$i'"
 			done
 		fi
+		touch $ashtray/$cig/.rolled
                 echo
                 echo "Rolled $cig"
                 echo

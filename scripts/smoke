@@ -16,7 +16,7 @@ else
                         echo "$cig has already been smoked"
                         echo
                 else
-                if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
+                if [ ! -f $ashtray/$cig/.rolled ]; then
                         echo "$cig has not been rolled!"
                         echo "Attempting to roll $cig..."
                         roll $cig
