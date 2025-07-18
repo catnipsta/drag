@@ -3,22 +3,20 @@ Source-based package manager written in bash for Linux distributions.
 Utilizes Arch's repos + AUR to maximize package support.
 ## commands:
 ### stash
-Add PKGBUILDS to your stash</br>
+Add PKGBUILDs to your stash</br>
 ```stash htop```
 ### snoop
-Edit PKGBUILDS in your stash</br>
+Edit PKGBUILDs in your stash</br>
 ```snoop htop```
 ### pinch
-Download the source files listed in the PKGBUILDs for select packages.</br>
+Download the source files listed in the PKGBUILDs.</br>
 ```pinch htop```
 ### roll
 Compile packages using the PKGBUILD's instructions</br>
-Keep in mind, you can edit and/or create your own PKGBUILDs.</br>
 ```roll htop```
 ### smoke
-Tracks installed files and version of packages.</br>
-Note: You must install the package to it's pkgdir before running smoke.</br>
-      This can be done either automatically by running roll or manually by compiling and setting DESTDIR to your package's pkgdir.</br>
+Installs packge.</br>
+Includes file and version tracking.</br>
 ```smoke htop```
 ### stub
 Uninstall select packages.</br>
@@ -28,7 +26,7 @@ View information about select packages.</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
 ```wiff htop```
 ### drags
-View current stash and smoked packages.</br>
+View smoked packages.</br>
 ```drags```
 ## Common Files and Directories
 <table>
@@ -61,18 +59,6 @@ export CFLAGS="-march=native -O2 -pipe"
 export CXXFLAGS="$CFLAGS"
 ```
 ## Installation
-There are two methods of installation:
-  1. Installing to existing systems
-  2. Installing to system on mount point (not chrooted)
-</br>
-If you are choosing the second option, you must set the DRAG_ROOT variable, place the scripts and config files under your mount point's file system, and add the mount point's /usr/bin to your PATH variable.</br>
-If you are installing to a system on a mount point, setting the DRAG_ROOT variable should look something like:
-
-```
-export DRAG_ROOT=/mnt/drive
-```
-</br>
-
 1. Clone</br>
 ```
 git clone https://github.com/catnipsta/drag.git
@@ -86,24 +72,7 @@ chmod +x scripts/*
 ```
 mv scripts/* /usr/bin/
 ```
-4. Optionally, create/edit configuration files
 ## Package Installation Example
-### pinch
-```
-pinch htop
-```
-### cd to srcdir
-```
-cd /var/cache/drag/ashtray/htop/src
-```
-### compile
-```
-cd htop
-./autogen.sh
-./configure --prefix=/usr
-make
-make DESTDIR=../../pkg install
-```
 ### smoke
 ```
 smoke htop
@@ -115,8 +84,8 @@ A: As of this moment at least, no you cannot. If you wish to add your own packag
 Q: How does drag handle dependencies?</br>
 A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies provided by Arch Linux, you may use the wiff command.</br>
 </br>
-Q: Do I have to stash a package first in order for pinch, wiff, smoke, etc to work?</br>
-A: No. If you haven't stashed a package previously, commands will attempt to stash it for you.</br>
+Q: Do I have to run commands individually in order to install a package?</br>
+A: No. You only need to run the smoke command.</br>
 </br>
-Q: Is the drag package manager meant to be used with a specific distribution?</br>
+Q: Is the drag package manager meant to be used on a specific distribution?</br>
 A: Although drag was created for Whispix, it can be used practically on any distribution, or even LFS.</br>
