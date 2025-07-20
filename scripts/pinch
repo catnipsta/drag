@@ -157,18 +157,16 @@ else
 				elif [[ -n $sha512sums ]]; then
 					actual=$(sha512sum $ashtray/$cig/src/$name)
 					expected=${sha512sums[$i]}
-				elif [[ -n $bd2sums ]]; then
-					actual=$(bd2sum $ashtray/$cig/src/$name)
-					expected=${bd2sums[$i]}
+				elif [[ -n $b2sums ]]; then
+					actual=$(b2sum $ashtray/$cig/src/$name)
+					expected=${b2sums[$i]}
 				elif [[ -n $md5sums ]]; then
 					actual=$(md5sum $ashtray/$cig/src/$name)
 					expected=${md5sums[$i]}
 				else
 					actual=""
 					expected="SKIP"
-					echo
-					echo "SKIPPING CHECKSUM FOR $name!"
-					echo "BE WARNED!"
+					echo "Checksum skipped for $name"
 					echo
 				fi
 				actual=${actual%%\ *}
