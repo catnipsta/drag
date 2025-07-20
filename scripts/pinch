@@ -60,6 +60,12 @@ else
 		fi
 		rm -rf $ashtray/$cig/
 		mkdir -p $ashtray/$cig/src
+		source=()
+		validpgpkeys=()
+		sha256sums=()
+		sha512sums=()
+		b2sums=()
+		md5sums=()
 		source $stash/$cig/PKGBUILD
 		echo "$pkgver" | tee $ashtray/$cig/ver
 		for i in "${!source[@]}"; do
