@@ -24,7 +24,6 @@ else
 			fi
 			tar -xzf $tmp1 -C $stash/
 			mv $stash/$cig-main $stash/$cig
-			sed -i 's/arch-meson/meson/g' $stash/$cig/PKGBUILD
 		elif file $tmp2 | grep -q "gzip"; then
 			echo "Stashing $cig from the AUR..."
 			cigs="$cigs $cig,"
@@ -32,7 +31,6 @@ else
 				rm -rf $stash/$cig
 			fi
 			tar -xzf $tmp2 -C $stash/
-			sed -i 's/arch-meson/meson/g' $stash/$cig/PKGBUILD
 		else
 			echo
 			echo "Could not find $cig in Arch's main repo or the AUR!"
