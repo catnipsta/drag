@@ -207,8 +207,7 @@ else
                                         *.tar.xz)
                                                 tar xJf $i;;
 					*.tar.zst)
-						zstd -d $i
-						tar xf ${i%.*};;
+						zstd -d --stdout $i | tar xf -;;
                                         *.zip)
                                                 unzip $i;;
                                         *.gz)
