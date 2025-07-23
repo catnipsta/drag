@@ -202,12 +202,14 @@ else
                                 case $i in
                                         *.tar.gz|*.tgz)
                                                 tar xzf $i;;
-                                        *.tar.bz2|*.tar|*.tbz|*.tar.lz)
+                                        *.tar.bz2|*.tar|*.tbz)
                                                 tar xf $i;;
                                         *.tar.xz)
                                                 tar xJf $i;;
 					*.tar.zst)
-						zstd -d --stdout $i | tar xf -;;
+						zstd -cd $i | tar xf -;;
+					*.tar.lz)
+						lzip -cd $i | tar xf -;;
                                         *.zip)
                                                 unzip $i;;
                                         *.gz)
