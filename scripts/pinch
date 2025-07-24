@@ -13,7 +13,7 @@ else
 	cigs=""
 	for cig in "$@"; do
 		if [ $cig == ca-certificates ]; then
-			echo "Pinching ca-certificates..."
+			echo "Pinching ca-certificates"
 			mkdir -p $ashtray/$cig/src
 			cd $ashtray/$cig/src
 			wget -qO ca-certificates.crt https://curl.se/ca/cacert.pem
