@@ -60,7 +60,6 @@ done
 #done
 #rsync -a --keep-dirlinks '$ashtray/$cig/pkg/' '$DRAG_ROOT/'
 
-                echo
                 echo "Smoked $cig"
                 echo
                 cigs="$cigs $cig,"
