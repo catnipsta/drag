@@ -44,11 +44,13 @@ else
                 $SUDO bash -c "
 mkdir -p '$DRAG_ROOT/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '$DRAG_ROOT/var/lib/drag/smoked/$cig/ver'
-for file in \$(find '$ashtray/$cig'/pkg/* \( -type f -o -type l -o -type s \)); do
-	mode=\$(stat -c %a \"\$file\")
-	file=\${file#*/pkg}
-	echo \"\$file\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
-	install -Dm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+for file in \$(find '$ashtray/$cig'/pkg/*); do
+	if [[ \$(file \"\$file\") != *directory* ]]; then
+		file=\${file#*/pkg}
+		echo \"\$file\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
+		mkdir -p '$DRAG_ROOT'\"\${file%\/*}\"
+		cp -a '$ashtray/$cig'/pkg\"\$file\" '$DRAG_ROOT'\"\$file\"
+	fi
 done
 "
 
