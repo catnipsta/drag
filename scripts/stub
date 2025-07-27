@@ -32,7 +32,7 @@ else
 			export cig='$cig'
 			if [[ -f $smoked/$cig/clutter ]]; then
 				while IFS= read -r file; do
-					rm -f \$DRAG_ROOT\$file
+					rm -fv \$DRAG_ROOT\$file
 				done < $smoked/$cig/clutter
 			fi
 			rm -rf $smoked/$cig

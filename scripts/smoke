@@ -49,7 +49,7 @@ for file in \$(find '$ashtray/$cig'/pkg/*); do
 		file=\${file#*'$cig'/pkg}
 		echo \"\$file\" >> '$DRAG_ROOT/var/lib/drag/smoked/$cig/clutter'
 		mkdir -p '$DRAG_ROOT'\"\${file%\/*}\"
-		cp -a '$ashtray/$cig'/pkg\"\$file\" '$DRAG_ROOT'\"\$file\"
+		cp -av '$ashtray/$cig'/pkg\"\$file\" '$DRAG_ROOT'\"\$file\"
 	fi
 done
 "
