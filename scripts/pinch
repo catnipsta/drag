@@ -3,7 +3,7 @@
 set -e
 
 stash=~/.cache/drag/stash
-ashtray=~/drag/ashtray
+ashtray=~/.cache/drag/ashtray
 
 if [[ -z "$@" ]]; then
 	echo "You can't pinch that!"
