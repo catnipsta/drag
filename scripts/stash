@@ -1,6 +1,6 @@
 #!/bin/bash
 
-stash=$HOME/.cache/drag/stash
+stash=~/.cache/drag/stash
 
 mkdir -p $stash
 

@@ -2,7 +2,7 @@
 
 set -e
 
-stash=$HOME/.cache/drag/stash
+stash=~/.cache/drag/stash
 
 if [[ -z "$@" ]]; then
 	echo "You can't wiff that!"

@@ -2,7 +2,7 @@
 
 set -e
 
-ashtray=$HOME/.cache/drag/ashtray
+ashtray=~/.cache/drag/ashtray
 
 if [[ -z "$@" ]]; then
         echo "You can't roll that!"
@@ -17,7 +17,7 @@ else
                 fi
 		export srcdir=$ashtray/$cig/src
 		export pkgdir=$ashtray/$cig/pkg
-		source $HOME/.cache/drag/stash/$cig/PKGBUILD
+		source ~/.cache/drag/stash/$cig/PKGBUILD
 		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
 		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
 		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
@@ -36,7 +36,7 @@ else
 			$SUDO bash -c "
 			export srcdir='$srcdir'
 			export pkgdir='$pkgdir'
-			source $HOME/.cache/drag/stash/$cig/PKGBUILD
+			source ~/.cache/drag/stash/$cig/PKGBUILD
 			package"
 		else
 			for i in ${pkgname[@]}; do
@@ -44,7 +44,7 @@ else
 				$SUDO bash -c "
 				export srcdir='$srcdir'
 				export pkgdir='$pkgdir'
-				source $HOME/.cache/drag/stash/$cig/PKGBUILD
+				source ~/.cache/drag/stash/$cig/PKGBUILD
 				package_'$i'"
 			done
 		fi

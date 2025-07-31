@@ -2,7 +2,7 @@
 
 set -e
 
-ashtray=$HOME/.cache/drag/ashtray
+ashtray=~/.cache/drag/ashtray
 
 if [[ -z "$@" ]]; then
         echo "You can't smoke that!"
