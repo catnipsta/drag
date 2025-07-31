@@ -36,7 +36,7 @@ else
 			$SUDO bash -c "
 			export srcdir='$srcdir'
 			export pkgdir='$pkgdir'
-			source ~/.cache/drag/stash/$cig/PKGBUILD
+			source $HOME/.cache/drag/stash/$cig/PKGBUILD
 			package"
 		else
 			for i in ${pkgname[@]}; do
@@ -44,7 +44,7 @@ else
 				$SUDO bash -c "
 				export srcdir='$srcdir'
 				export pkgdir='$pkgdir'
-				source ~/.cache/drag/stash/$cig/PKGBUILD
+				source $HOME/.cache/drag/stash/$cig/PKGBUILD
 				package_'$i'"
 			done
 		fi
