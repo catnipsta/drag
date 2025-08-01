@@ -37,7 +37,7 @@ else
 			export srcdir='$srcdir'
 			export pkgdir='$pkgdir'
 			source $HOME/.cache/drag/stash/$cig/PKGBUILD
-			package"
+			package || package_$cig"
 		else
 			for i in ${pkgname[@]}; do
 				cd $srcdir
