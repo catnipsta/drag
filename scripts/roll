@@ -2,7 +2,7 @@
 
 set -e
 
-ashtray=~/.cache/drag/ashtray
+ashtray=$HOME/.cache/drag/ashtray
 
 if [[ -z "$@" ]]; then
         echo "You can't roll that!"
@@ -17,7 +17,7 @@ else
                 fi
 		export srcdir=$ashtray/$cig/src
 		export pkgdir=$ashtray/$cig/pkg
-		source ~/.cache/drag/stash/$cig/PKGBUILD
+		source $HOME/.cache/drag/stash/$cig/PKGBUILD
 		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
 		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
 		if declare -f check   > /dev/null; then cd $srcdir;   check; fi

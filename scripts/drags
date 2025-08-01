@@ -1,2 +1,2 @@
 #!/bin/bash
-echo $(find $DRAG_ROOT/var/lib/drag/smoked/* -maxdepth 0 -exec basename {} \;)
+echo $(find /var/lib/drag/smoked/* -maxdepth 0 -exec basename {} \;)

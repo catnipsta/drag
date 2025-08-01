@@ -2,7 +2,7 @@
 
 set -e
 
-smoked=$DRAG_ROOT/var/lib/drag/smoked
+smoked=/var/lib/drag/smoked
 
 if [[ -z "$@" ]]; then
 	echo "You can't stub that!"
@@ -25,14 +25,13 @@ else
 			if [ $EUID == 0 ]; then
 				SUDO=
 			fi
-			export DRAG_ROOT smoked cig
+			export smoked cig
 	                $SUDO bash -c "
-			export DRAG_ROOT='$DRAG_ROOT'
 			export smoked='$smoked'
 			export cig='$cig'
 			if [[ -f $smoked/$cig/clutter ]]; then
 				while IFS= read -r file; do
-					rm -fv \$DRAG_ROOT\$file
+					rm -fv \$file
 				done < $smoked/$cig/clutter
 			fi
 			rm -rf $smoked/$cig

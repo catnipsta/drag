@@ -2,8 +2,8 @@
 
 set -e
 
-stash=~/.cache/drag/stash
-ashtray=~/.cache/drag/ashtray
+stash=$HOME/.cache/drag/stash
+ashtray=$HOME/.cache/drag/ashtray
 
 if [[ -z "$@" ]]; then
 	echo "You can't pinch that!"
@@ -30,10 +30,9 @@ else
 		                elif command -v su >/dev/null 2>&1; then
                         		SUDO="su root"
 		                fi 
-				export DRAG_ROOT
 				$SUDO bash -c "
-				cp ca-certificates.crt '$DRAG_ROOT'/etc/ssl/certs/
-				cp ca-certificates.crt '$DRAG_ROOT'/etc/ssl/cert.pem"
+				cp ca-certificates.crt /etc/ssl/certs/
+				cp ca-certificates.crt /etc/ssl/cert.pem"
 				rm ca-certificates.crt certsha256sum
 				cigs="$cigs $cig,"
 			else
@@ -55,7 +54,7 @@ else
 	                elif command -v su >/dev/null 2>&1; then
                        		SUDO="su root"
 	                fi 
-			export DRAG_ROOT ashtray cig
+			export ashtray cig
 			$SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
 		fi
 		rm -rf $ashtray/$cig/

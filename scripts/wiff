@@ -2,7 +2,7 @@
 
 set -e
 
-stash=~/.cache/drag/stash
+stash=$HOME/.cache/drag/stash
 
 if [[ -z "$@" ]]; then
 	echo "You can't wiff that!"
@@ -16,10 +16,10 @@ else
 			stash $cig
 		fi
 		source $stash/$cig/PKGBUILD
-		if [ -d $DRAG_ROOT/var/lib/drag/smoked/$cig ]; then
+		if [ -d /var/lib/drag/smoked/$cig ]; then
 			echo "$pkgname"
 			echo "Latest version: $pkgver"
-			echo "Smoked version: $(cat $DRAG_ROOT/var/lib/drag/smoked/$cig/ver)"
+			echo "Smoked version: $(cat /var/lib/drag/smoked/$cig/ver)"
 		else
 			echo "$pkgname - $pkgver"
 			echo "$cig has not been smoked"
