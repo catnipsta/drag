@@ -17,6 +17,7 @@ else
                 fi
 		export srcdir=$ashtray/$cig/src
 		export pkgdir=$ashtray/$cig/pkg
+		rm -rf $pkgdir $ashtray/$cig/.rolled
 		source $HOME/.cache/drag/stash/$cig/PKGBUILD
 		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
 		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
