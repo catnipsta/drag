@@ -17,6 +17,8 @@ else
                 EDITOR=emacs
 	elif command -v vi >/dev/null 2>&1; then
                 EDITOR=vi
+	elif command -v ed >/dev/null 2>&1; then
+                EDITOR=ed
         fi
 	cigs=""
         for cig in "$@"; do
