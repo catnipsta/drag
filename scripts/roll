@@ -17,11 +17,6 @@ else
                 fi
 		export srcdir=$ashtray/$cig/src
 		export pkgdir=$ashtray/$cig/pkg
-		rm -rf $pkgdir $ashtray/$cig/.rolled
-		source $HOME/.cache/drag/stash/$cig/PKGBUILD
-		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
-		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
-		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
 		if command -v sudo >/dev/null 2>&1; then
                         SUDO=sudo
                 elif command -v doas >/dev/null 2>&1; then
@@ -32,6 +27,11 @@ else
 		if [ $EUID == 0 ]; then
 			SUDO=
 		fi
+		$SUDO rm -rf $pkgdir $ashtray/$cig/.rolled
+		source $HOME/.cache/drag/stash/$cig/PKGBUILD
+		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
+		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
+		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
 		if [ ${#pkgname[@]} == 1 ]; then
 			cd $srcdir
 			$SUDO bash -c "
