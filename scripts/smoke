@@ -44,17 +44,17 @@ else
                 $SUDO bash -c "
 mkdir -p '/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
-for file in \"\$(find '$ashtray/$cig'/pkg/*)\"; do
-        if [[ \"\$(file \"\$file\")\" != *directory* && \"\$(file \"\$file\")\" != *link* ]]; then
+for file in \$(find '$ashtray/$cig'/pkg/*); do
+        if [[ \"\$(file \"\$file\")\" != *directory* && \"\$(file \"\$file\")\" != *\"symbolic link\"* ]]; then
 		mode=\$(stat -c %a \"\$file\")
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
                 install -vDm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
-        elif [[ \"\$(file \"\$file\")\" == *link* ]]; then
+        elif [[ \"\$(file \"\$file\")\" == *\"symbolic link\"* ]]; then
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
                 mkdir -p \"\${file%\/*}\"
-		ln -sf \"\$(readlink \"\$file\")\" \"\$file\"
+		ln -sf \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
         fi
 done
 "
