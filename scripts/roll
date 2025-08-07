@@ -13,44 +13,45 @@ else
         for cig in "$@"; do
                 if [[ -z $(ls $ashtray/$cig/src) ]]; then
                         echo "$cig has not been pinched!"
-			pinch $cig
+                        pinch $cig
                 fi
-		export srcdir=$ashtray/$cig/src
-		export pkgdir=$ashtray/$cig/pkg
-		if command -v sudo >/dev/null 2>&1; then
+                export srcdir=$ashtray/$cig/src
+                export pkgdir=$ashtray/$cig/pkg
+                if command -v sudo >/dev/null 2>&1; then
                         SUDO=sudo
                 elif command -v doas >/dev/null 2>&1; then
                         SUDO=doas
                 elif command -v su >/dev/null 2>&1; then
                         SUDO="su root"
                 fi
-		if [ $EUID == 0 ]; then
-			SUDO=
-		fi
-		$SUDO rm -rf $pkgdir $ashtray/$cig/.rolled
-		source $HOME/.cache/drag/stash/$cig/PKGBUILD
-		if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
-		if declare -f build   > /dev/null; then cd $srcdir;   build; fi
-		if declare -f check   > /dev/null; then cd $srcdir;   check; fi
-		if [ ${#pkgname[@]} == 1 ]; then
-			cd $srcdir
-			$SUDO bash -c "
-			export srcdir='$srcdir'
-			export pkgdir='$pkgdir'
-			source $HOME/.cache/drag/stash/$cig/PKGBUILD
-			if declare -f package; then package; else
-			package_$cig; fi"
-		else
-			for i in ${pkgname[@]}; do
-				cd $srcdir
-				$SUDO bash -c "
-				export srcdir='$srcdir'
-				export pkgdir='$pkgdir'
-				source $HOME/.cache/drag/stash/$cig/PKGBUILD
-				package_'$i'"
-			done
-		fi
-		touch $ashtray/$cig/.rolled
+                if [ $EUID == 0 ]; then
+                        SUDO=
+                fi
+                [ -d $pkgdir ] && $SUDO rm -rf $pkgdir
+                rm -f $ashtray/$cig/.rolled
+                source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
+                if declare -f build   > /dev/null; then cd $srcdir;   build; fi
+                if declare -f check   > /dev/null; then cd $srcdir;   check; fi
+                if [ ${#pkgname[@]} == 1 ]; then
+                        cd $srcdir
+                        $SUDO bash -c "
+                        export srcdir='$srcdir'
+                        export pkgdir='$pkgdir'
+                        source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                        if declare -f package; then package; else
+                        package_$cig; fi"
+                else
+                        for i in ${pkgname[@]}; do
+                                cd $srcdir
+                                $SUDO bash -c "
+                                export srcdir='$srcdir'
+                                export pkgdir='$pkgdir'
+                                source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                                package_'$i'"
+                        done
+                fi
+                touch $ashtray/$cig/.rolled
                 echo
                 echo "Rolled $cig"
                 echo
