@@ -55,6 +55,8 @@ for file in \$(find '$ashtray/$cig'/pkg/*); do
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
                 mkdir -p \"\${file%\/*}\"
 		ln -sf \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
+	else
+		mkdir -p \"\$file\"
         fi
 done
 "
