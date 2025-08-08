@@ -53,7 +53,7 @@ for file in \$(find '$ashtray/$cig'/pkg/*); do
         elif [[ \"\$(file \"\$file\")\" == *\"symbolic link\"* ]]; then
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
-		ln -sf \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
+		ln -sfv \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
 	else
 		mkdir -vp \"\$file\"
         fi
