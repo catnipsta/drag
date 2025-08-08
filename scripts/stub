@@ -31,7 +31,7 @@ else
 			export cig='$cig'
 			if [[ -f $smoked/$cig/clutter ]]; then
 				while IFS= read -r file; do
-					rm -fv \$file
+					rm -fv \"\$file\"
 				done < $smoked/$cig/clutter
 			fi
 			rm -rf $smoked/$cig
