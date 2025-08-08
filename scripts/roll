@@ -30,7 +30,7 @@ else
                 [ -d $pkgdir ] && $SUDO rm -rf $pkgdir
                 rm -f $ashtray/$cig/.rolled
                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
-                if declare -f prepare > /dev/null; then cd $srcdir; prepare; fi
+                if declare -f prepare > /dev/null && [ ! -f $ashtray/$cig/.prep ]; then cd $srcdir && prepare && touch $ashtray/$cig/.prep; fi
                 if declare -f build   > /dev/null; then cd $srcdir;   build; fi
                 if declare -f check   > /dev/null; then cd $srcdir;   check; fi
                 if [ ${#pkgname[@]} == 1 ]; then
