@@ -35,7 +35,7 @@ else
                 if declare -f check   > /dev/null; then cd $srcdir;   check; fi
                 if [ ${#pkgname[@]} == 1 ]; then
                         cd $srcdir
-                        $SUDO bash -c "
+                        $SUDO bash -c "set -e
                         export srcdir='$srcdir'
                         export pkgdir='$pkgdir'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
@@ -44,7 +44,7 @@ else
                 else
                         for i in ${pkgname[@]}; do
                                 cd $srcdir
-                                $SUDO bash -c "
+                                $SUDO bash -c "set -e
                                 export srcdir='$srcdir'
                                 export pkgdir='$pkgdir'
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD

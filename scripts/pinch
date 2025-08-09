@@ -30,7 +30,7 @@ else
 		                elif command -v su >/dev/null 2>&1; then
                         		SUDO="su root"
 		                fi 
-				$SUDO bash -c "
+				$SUDO bash -c "set -e
 				cp ca-certificates.crt /etc/ssl/certs/
 				cp ca-certificates.crt /etc/ssl/cert.pem"
 				rm ca-certificates.crt certsha256sum

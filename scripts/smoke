@@ -41,7 +41,7 @@ else
                 fi
 
                 export ashtray cig
-                $SUDO bash -c "
+                $SUDO bash -c "set -e
 mkdir -p '/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
 while IFS= read -r file; do

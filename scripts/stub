@@ -27,14 +27,12 @@ else
 			fi
 			export smoked cig
 	                $SUDO bash -c "
-			export smoked='$smoked'
-			export cig='$cig'
-			if [[ -f $smoked/$cig/clutter ]]; then
+			if [[ -f '$smoked/$cig'/clutter ]]; then
 				while IFS= read -r file; do
 					rm -fv \"\$file\"
-				done < $smoked/$cig/clutter
+				done < '$smoked/$cig'/clutter
 			fi
-			rm -rf $smoked/$cig
+			rm -rf '$smoked/$cig'
 			"
 		fi
 		echo "Stubbed $cig"
