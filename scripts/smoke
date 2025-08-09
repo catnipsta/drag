@@ -49,13 +49,13 @@ while IFS= read -r file; do
 		mode=\"\$(stat -c %a \"\$file\")\"
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
-                install -vDm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+                install -vm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
         elif [[ \"\$(file \"\$file\")\" == *\"symbolic link\"* ]]; then
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
 		ln -sfv \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
 	else
-		mkdir -vp \"\$file\"
+		mkdir -vp \"\${file#*'$cig'/pkg}\"
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
 "
