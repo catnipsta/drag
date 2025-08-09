@@ -42,8 +42,7 @@ else
 			fi
 		else
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
-			echo "$cig has not been stashed!"
-			echo "Attempting to stash $cig..."
+			echo "$cig has not been stashed"
 			stash $cig
 		fi
 		if [ -d $ashtray/$cig/pkg ]; then
