@@ -43,7 +43,7 @@ else
 mkdir -p '/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
 while IFS= read -r file; do
-        if [[ \"\$(file \"\$file\")\" != *\": directory\"* && \"\$(file \"\$file\")\" != *\": \"*\"symbolic link\"* ]]; then
+        if [[ \"\$(file \"\$file\")\" != *\": \"*\"directory\"* && \"\$(file \"\$file\")\" != *\": \"*\"symbolic link\"* ]]; then
 		mode=\"\$(stat -c %a \"\$file\")\"
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
@@ -53,7 +53,9 @@ while IFS= read -r file; do
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
 		ln -sfv \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
 	else
+		mode=\"\$(stat -c %a \"\$file\")\"
 		mkdir -vp \"\${file#*'$cig'/pkg}\"
+		chmod -v \"\$mode\" \"\${file#*'$cig'/pkg}\"
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
 "
