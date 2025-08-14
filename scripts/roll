@@ -39,7 +39,7 @@ else
                         export srcdir='$srcdir'
                         export pkgdir='$pkgdir'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
-                        if declare -f package; then package; else
+                        if declare -f package > /dev/null; then package; else
                         package_$cig; fi"
                 else
                         for i in ${pkgname[@]}; do
