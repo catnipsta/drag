@@ -40,11 +40,11 @@ else
                         fi
                 elif [ -d /var/lib/drag/smoked/$cig ]; then
                         echo
-                        echo "$cig has already been smoked"
+                        echo "$cig already smoked"
                         echo
                 else
                 if [ ! -f $ashtray/$cig/.rolled ]; then
-                        echo "$cig has not been rolled"
+                        echo "$cig not rolled"
                         roll $cig
                 fi
                 if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
