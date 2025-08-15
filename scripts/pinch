@@ -12,35 +12,6 @@ if [[ -z "$@" ]]; then
 else
 	cigs=""
 	for cig in "$@"; do
-		if [ $cig == ca-certificates ]; then
-			echo "Pinching ca-certificates"
-			mkdir -p $ashtray/$cig/src
-			cd $ashtray/$cig/src
-			wget -qO ca-certificates.crt https://curl.se/ca/cacert.pem
-			wget -qO certsha256sum       https://curl.se/ca/cacert.pem.sha256
-			actual=$(sha256sum ca-certificates.crt)
-			actual=${actual%%\ *}
-			if [[ "$(cat certsha256sum)" == *$actual* ]]; then
-				echo "Verified ca-certificates!"
-				echo
-				if command -v sudo >/dev/null 2>&1; then
-		                        SUDO=sudo
-		                elif command -v doas >/dev/null 2>&1; then
-		                        SUDO=doas
-		                elif command -v su >/dev/null 2>&1; then
-                        		SUDO="su root"
-		                fi 
-				$SUDO bash -c "set -e
-				cp ca-certificates.crt /etc/ssl/certs/
-				cp ca-certificates.crt /etc/ssl/cert.pem"
-				rm ca-certificates.crt certsha256sum
-				cigs="$cigs $cig,"
-			else
-				echo "CHECKSUM VALIDATION FAILED FOR ca-certificates!"
-				echo
-				exit 1
-			fi
-		else
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
 			echo "$cig has not been stashed"
 			stash $cig
@@ -151,9 +122,9 @@ else
 					cp $stash/$cig/$name $ashtray/$cig/src/$name
 				fi
 				if [[ "${source[$i]}" == *"http://"* || ${source[$i]} == *"https://"* ]]; then
-					wget -O $ashtray/$cig/src/$name "http${source[$i]#*http}"
+					curl -Lo $ashtray/$cig/src/$name "http${source[$i]#*http}"
 				elif [[ ${source[$i]} == *"ftp://"* ]]; then
-					wget -O $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
+					curl -Lo $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
 				fi
 				if [[ -n $sha256sums ]]; then
 					actual=$(sha256sum $ashtray/$cig/src/$name)
@@ -220,7 +191,6 @@ else
                         fi
                 done
 		cigs="$cigs $cig,"
-		fi
 	done
 	cigs="${cigs%%,}"
 	echo

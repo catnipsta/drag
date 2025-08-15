@@ -12,36 +12,38 @@ else
 	cigs=""
 	for cig in "$@"; do
 		echo "Taking a drag..."
-		tmp1=$(mktemp)
-		tmp2=$(mktemp)
-		wget -O $tmp1 https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz 2>&1 | grep -q "302 Found" &&
-		wget -qO $tmp2 https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
-		if file $tmp1 | grep -q "gzip"; then
-			echo "Stashing $cig from Arch's repo..."
+		tmp=$(mktemp)
+		curl -Lo $tmp https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
+		if file $tmp | grep -q "gzip"; then
+			echo "Stashed $cig from Arch's repo"
 			cigs="$cigs $cig,"
 			if [ -d $stash/$cig ]; then
 				rm -rf $stash/$cig
 			fi
-			tar -xzf $tmp1 -C $stash/
+			tar -xzf $tmp -C $stash/
 			mv $stash/$cig-main $stash/$cig
-		elif file $tmp2 | grep -q "gzip"; then
-			echo "Stashing $cig from the AUR..."
-			cigs="$cigs $cig,"
-			if [ -d $stash/$cig ]; then
-				rm -rf $stash/$cig
-			fi
-			tar -xzf $tmp2 -C $stash/
 		else
-			echo
-			echo "Could not find $cig in Arch's main repo or the AUR!"
-			cigs="${cigs%%,}"
-			if [[ -n "$cigs" ]]; then
-				echo "Stashed$cigs"
+			rm $tmp
+			curl -Lo $tmp https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
+			if file $tmp | grep -q "gzip"; then
+				echo "Stashed $cig from the AUR"
+				cigs="$cigs $cig,"
+				if [ -d $stash/$cig ]; then
+					rm -rf $stash/$cig
+				fi
+				tar -xzf $tmp -C $stash/
+			else
+				echo
+				echo "Could not find $cig in Arch's main repo or the AUR!"
+				cigs="${cigs%%,}"
+				if [[ -n "$cigs" ]]; then
+					echo "Stashed$cigs"
+				fi
+				echo
+				exit 1
 			fi
-			echo
-			exit 1
 		fi
-		rm $tmp1 $tmp2
+		rm $tmp
 	done
 	cigs="${cigs%%,}"
 	snoop $@
