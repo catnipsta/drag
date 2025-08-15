@@ -12,7 +12,7 @@ else
         cigs=""
         for cig in "$@"; do
                 if [[ -z $(ls $ashtray/$cig/src) ]]; then
-                        echo "$cig has not been pinched"
+                        echo "$cig not pinched"
                         pinch $cig
                 fi
                 export srcdir=$ashtray/$cig/src
