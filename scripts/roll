@@ -27,6 +27,7 @@ else
                 if [ $EUID == 0 ]; then
                         SUDO=
                 fi
+		[[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
                 [ -d $pkgdir ] && $SUDO rm -rf $pkgdir
                 rm -f $ashtray/$cig/.rolled
                 source $HOME/.cache/drag/stash/$cig/PKGBUILD

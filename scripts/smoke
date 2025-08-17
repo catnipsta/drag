@@ -29,6 +29,10 @@ else
                                 elif command -v su >/dev/null 2>&1; then
                                         SUDO="su root"
                                 fi 
+                		if [ $EUID == 0 ]; then
+		                        SUDO=
+		                fi
+		                [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
                                 $SUDO bash -c "set -e
                                 cp ca-certificates.crt /etc/ssl/certs/
                                 cp ca-certificates.crt /etc/ssl/cert.pem"
@@ -64,6 +68,7 @@ else
                 if [ $EUID == 0 ]; then
                         SUDO=
                 fi
+                [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
 
                 export ashtray cig
                 $SUDO bash -c "set -e
