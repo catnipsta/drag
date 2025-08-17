@@ -71,6 +71,7 @@ else
                 [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
 
                 export ashtray cig
+
                 $SUDO bash -c "set -e
 mkdir -p '/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
@@ -79,7 +80,11 @@ while IFS= read -r file; do
 		mode=\"\$(stat -c %a \"\$file\")\"
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
-                install -vm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+                if [[ \$cig != file ]]; then
+			install -vm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+		else
+			cp -av '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+		fi
         elif [[ \"\$(file \"\$file\")\" == *\": \"*\"symbolic link\"* ]]; then
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
@@ -91,7 +96,6 @@ while IFS= read -r file; do
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
 "
-
                 echo "Smoked $cig"
                 echo
                 cigs="$cigs $cig,"
