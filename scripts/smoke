@@ -46,6 +46,7 @@ else
                         echo
                         echo "$cig already smoked"
                         echo
+                	cigs="$cigs $cig,"
                 else
                 if [ ! -f $ashtray/$cig/.rolled ]; then
                         echo "$cig not rolled"
