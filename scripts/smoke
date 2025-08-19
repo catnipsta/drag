@@ -49,6 +49,7 @@ else
 			chmod +x drag/scripts/*
 			$SUDO bash -c "cp drag/scripts/* /usr/bin/"
 			rm -rf drag
+			cigs="$cigs $cig,"
                 elif [ -d /var/lib/drag/smoked/$cig ]; then
                         echo
                         echo "$cig already smoked"
