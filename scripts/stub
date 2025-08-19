@@ -34,6 +34,13 @@ else
 				done < '$smoked/$cig'/clutter
 			fi
 			rm -rf '$smoked/$cig'
+
+			if [ -d '$ashtray/../stash/$cig' ]; then 
+			for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
+			        (source \"\$i\"
+			        if declare -f post_remove > /dev/null; then post_remove; fi)
+			done
+			fi
 			"
 		fi
 		echo "Stubbed $cig"
