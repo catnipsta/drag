@@ -94,6 +94,7 @@ while IFS= read -r file; do
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
 
+cd /
 if [ -d '$ashtray/../stash/$cig' ]; then 
 for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
 	(source \"\$i\"

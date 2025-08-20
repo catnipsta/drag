@@ -35,6 +35,7 @@ else
 			fi
 			rm -rf '$smoked/$cig'
 
+			cd /
 			if [ -d '$ashtray/../stash/$cig' ]; then 
 			for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
 			        (source \"\$i\"
