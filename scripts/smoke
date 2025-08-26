@@ -50,12 +50,12 @@ else
 			$SUDO bash -c "cp drag/scripts/* /usr/bin/"
 			rm -rf drag
 			cigs="$cigs $cig,"
-                elif [ -d /var/lib/drag/smoked/$cig ]; then
+                elif [[ -d /var/lib/drag/smoked/$cig && $1 != "-o" ]]; then
                         echo
                         echo "$cig already smoked"
                         echo
                 	cigs="$cigs $cig,"
-                else
+                elif [ $cig != "-o" ]; then
                 if [ ! -f $ashtray/$cig/.rolled ]; then
                         echo "$cig not rolled"
                         roll $cig
