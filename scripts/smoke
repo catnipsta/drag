@@ -53,6 +53,8 @@ else
                 elif [[ -d /var/lib/drag/smoked/$cig && $1 != "-o" ]]; then
                         echo
                         echo "$cig already smoked"
+			echo "To override this, run:"
+			echo "smoke -o $cig"
                         echo
                 	cigs="$cigs $cig,"
                 elif [ $cig != "-o" ]; then
