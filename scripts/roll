@@ -11,7 +11,7 @@ if [[ -z "$@" ]]; then
 else
         cigs=""
         for cig in "$@"; do
-                if [[ -z $(ls $ashtray/$cig/src) ]]; then
+                if [[ ! -f $ashtray/$cig/.pnch ]]; then
                         echo "$cig not pinched"
                         pinch $cig
                 fi

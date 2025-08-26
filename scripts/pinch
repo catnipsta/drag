@@ -190,6 +190,7 @@ else
                                 esac
                         fi
                 done
+		touch $ashtray/$cig/.pnch
 		cigs="$cigs $cig,"
 	done
 	cigs="${cigs%%,}"
