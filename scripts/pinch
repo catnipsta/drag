@@ -13,7 +13,7 @@ else
 	cigs=""
 	for cig in "$@"; do
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
-			echo "$cig has not been stashed"
+			echo "$cig not stashed"
 			stash $cig
 		fi
 		if [ -d $ashtray/$cig/pkg ]; then
