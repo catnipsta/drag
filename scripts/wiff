@@ -16,13 +16,12 @@ else
 			stash -ns $cig
 		fi
 		source $stash/$cig/PKGBUILD
+		echo "$pkgname"
+		echo "Latest version: $pkgver"
 		if [ -d /var/lib/drag/smoked/$cig ]; then
-			echo "$pkgname"
-			echo "Latest version: $pkgver"
 			echo "Smoked version: $(cat /var/lib/drag/smoked/$cig/ver)"
 		else
-			echo "$pkgname - $pkgver"
-			echo "$cig has not been smoked"
+			echo "$cig not smoked"
 		fi
 		echo $pkgdesc 
 		echo
