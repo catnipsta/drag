@@ -11,6 +11,7 @@ if [[ -z "$@" ]]; then
 else
 	cigs=""
 	for cig in "$@"; do
+		if [ $cig != "-ns" ]; then
 		echo "Taking a drag..."
 		tmp=$(mktemp)
 		curl -Lo $tmp https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
@@ -44,9 +45,10 @@ else
 			fi
 		fi
 		rm $tmp
+		fi
 	done
 	cigs="${cigs%%,}"
-	snoop $@
+	[ $1 != "-ns" ] && snoop $@
 	echo
 	echo "Stashed$cigs"
 	echo

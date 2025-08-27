@@ -13,7 +13,7 @@ else
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
 			echo "$cig has not been stashed."
 			echo "Attempting to stash $cig..."
-			stash $cig
+			stash -ns $cig
 		fi
 		source $stash/$cig/PKGBUILD
 		if [ -d /var/lib/drag/smoked/$cig ]; then
