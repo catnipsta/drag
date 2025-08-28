@@ -10,6 +10,7 @@ if [[ -z "$@" ]]; then
 	exit 1
 else
 	for cig in "$@"; do
+		echo
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
 			echo "$cig has not been stashed."
 			echo "Attempting to stash $cig..."
@@ -23,7 +24,9 @@ else
 		else
 			echo "$cig not smoked"
 		fi
+		echo
 		echo $pkgdesc 
+		echo "Provides: ${provides[*]}"
 		echo
 		echo "Depends: ${depends[*]}"
                 echo "Optional depends: ${optdepends[*]}"
