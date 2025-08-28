@@ -34,6 +34,7 @@ else
                 if declare -f prepare > /dev/null && [ ! -f $ashtray/$cig/.prp ]; then cd $srcdir; prepare; touch $ashtray/$cig/.prp; fi
                 if declare -f build > /dev/null && [ ! -f $ashtray/$cig/.bld ]; then cd $srcdir; build; touch $ashtray/$cig/.bld; fi
                 if declare -f check > /dev/null && [ ! -f $ashtray/$cig/.chk ]; then cd $srcdir; check; touch $ashtray/$cig/.chk; fi
+		mkdir -p $pkgdir
                 if [ ${#pkgname[@]} == 1 ]; then
                         cd $srcdir
                         $SUDO bash -c "set -e
