@@ -38,7 +38,7 @@ else
 		source $stash/$cig/PKGBUILD
 		echo "$pkgver" | tee $ashtray/$cig/ver
 		for i in "${!source[@]}"; do
-			if [[ ("${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"*) && "${source[$i]}" != *".git"*"/"* ]]; then
+			if [[ ("${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"* || "${source[$i]}" == *"git://"* ) && "${source[$i]}" != *".git"*"/"* ]]; then
 				if [[ ${source[$i]} == *::* ]]; then
 					name="${source[$i]%%::*}"
 				else
@@ -48,6 +48,7 @@ else
 					name="${name%%\?*}"
 				fi
 				url="${source[$i]#*git+}"
+				url="${url#*::}"
 				commit="${url##*commit=}"
 				commit="${commit%%\&*}"
 				commit="${commit%%\?*}"
@@ -107,7 +108,7 @@ else
 				fi
 			elif [[ "${source[$i]}" == *hg+* ]]; then
 				echo "Mercurial repos are not supported by drag!"
-				echo "You may manually download: ${source[$i]}"
+				echo "You may instead manually download and install from: ${source[$i]}"
 				echo
 				exit 1
 			else
