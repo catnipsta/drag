@@ -27,6 +27,7 @@ else
 			export ashtray cig
 			$SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
 		fi
+		[ $cig == gmp ] && curl -Is https://gmplib.org > /dev/null
 		rm -rf $ashtray/$cig/
 		mkdir -p $ashtray/$cig/src
 		source=()
