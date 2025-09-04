@@ -9,23 +9,23 @@ if [[ -z "$@" ]]; then
 	echo
 	exit 1
 else
+	if command -v sudo >/dev/null 2>&1; then
+                SUDO=sudo
+       	elif command -v doas >/dev/null 2>&1; then
+               	SUDO=doas
+        elif command -v su >/dev/null 2>&1; then
+               	SUDO="su root"
+       	fi
+	if [ $EUID == 0 ]; then
+		SUDO=
+	fi
+        [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
 	cigs=""
 	for cig in $@; do
 		if [[ ! -d $smoked/$cig ]]; then
 			echo "$cig has not been smoked!"
 			echo
 		else
-			if command -v sudo >/dev/null 2>&1; then
-       		                SUDO=sudo
-               		elif command -v doas >/dev/null 2>&1; then
-                       		SUDO=doas
-                	elif command -v su >/dev/null 2>&1; then
-                        	SUDO="su root"
-                	fi
-			if [ $EUID == 0 ]; then
-				SUDO=
-			fi
-	                [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
 			export smoked cig
 	                $SUDO bash -c "
 			if [[ -f '$smoked/$cig'/clutter ]]; then
