@@ -4,30 +4,23 @@ Utilizes Arch's repos + AUR to maximize package support.
 ## commands:
 ### stash
 Add PKGBUILDs to your stash</br>
-```stash htop```
 ### snoop
 Edit PKGBUILDs in your stash</br>
-```snoop htop```
 ### pinch
 Download the source files listed in the PKGBUILDs.</br>
-```pinch htop```
 ### roll
 Compile packages using the PKGBUILD's instructions</br>
-```roll htop```
 ### smoke
 Installs packge.</br>
-Includes file and version tracking.</br>
-```smoke htop```
 ### stub
 Uninstall select packages.</br>
-```stub htop```
 ### wiff
 View information about select packages.</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
-```wiff htop```
 ### drags
 View smoked packages.</br>
-```drags```
+### hotbox
+Clear drag cache.</br>
 ## Files and Directories
 <table>
   <tr>
