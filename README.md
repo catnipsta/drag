@@ -7,20 +7,20 @@ Add PKGBUILDs to your stash</br>
 ### snoop
 Edit PKGBUILDs in your stash</br>
 ### pinch
-Download the source files listed in the PKGBUILDs.</br>
+Download the source files listed in the PKGBUILDs</br>
 ### roll
 Compile packages using the PKGBUILD's instructions</br>
 ### smoke
-Installs packge.</br>
+Installs packge</br>
 ### stub
-Uninstall select packages.</br>
+Uninstall select packages</br>
 ### wiff
-View information about select packages.</br>
+View information about select packages</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
 ### drags
-View smoked packages.</br>
+View smoked packages</br>
 ### hotbox
-Clear drag cache.</br>
+Clear drag cache</br>
 ## Files and Directories
 <table>
   <tr>
