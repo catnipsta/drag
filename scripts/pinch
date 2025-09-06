@@ -108,10 +108,20 @@ else
 					echo
 				fi
 			elif [[ "${source[$i]}" == *hg+* ]]; then
-				echo "Mercurial repos are not supported by drag!"
-				echo "You may instead manually download and install from: ${source[$i]}"
-				echo
-				exit 1
+				echo "WARNING: Mercurial is not fully supported by drag"
+				if [[ ${source[$i]} == *::* ]]; then
+					name="${source[$i]%%::*}"
+				else
+					name="${source[$i]##*/}"
+					name="${name%%#*}"
+					name="${name%%\?*}"
+				fi
+				url="${source[$i]#*hg+}"
+				url="${url#*::}"
+				url="${url%%\?*}"
+				url="${url%%#*}"
+				cd $ashtray/$cig/src
+				hg clone $url
 			else
 				if [[ ${source[$i]} == *::* ]]; then
 					name=${source[$i]%%::*}
