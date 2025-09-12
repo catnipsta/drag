@@ -26,7 +26,6 @@ else
 	if [[ "$@" == "-o "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
 		override=true
 	fi
-	echo "$@"
 	if [[ "$@" == "-b "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
 		blaze=true
 	fi
