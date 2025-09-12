@@ -12,6 +12,9 @@ Download the source files listed in the PKGBUILDs</br>
 Compile packages using the PKGBUILD's instructions</br>
 ### smoke
 Installs packge</br>
+Use -o to smoke without stubbing first.
+Use -b to blaze before smoking.
+To update packages use either -ob or -bo.
 ### stub
 Uninstall select packages</br>
 ### wiff
@@ -19,8 +22,8 @@ View information about select packages</br>
 Information includes version, description, dependencies, and whether the package has been smoked or not.</br>
 ### drags
 View smoked packages</br>
-### hotbox
-Clear drag cache</br>
+### blaze
+Remove clear stash and ashtray for packages</br>
 ## Files and Directories
 <table>
   <tr>
