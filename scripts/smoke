@@ -21,7 +21,19 @@ else
         fi
         [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
         cigs=""
+	override=false
+	blaze=false
+	if [[ "$@" == "-o "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
+		override=true
+	fi
+	echo "$@"
+	if [[ "$@" == "-b "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
+		blaze=true
+	fi
         for cig in "$@"; do
+		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" ]]; then
+			blaze $cig
+		fi
 		if [ $cig == ca-certificates ]; then
                         echo "Smoking ca-certificates"
                         mkdir -p $ashtray/$cig/src
@@ -50,14 +62,14 @@ else
 			$SUDO bash -c "cp drag/scripts/* /usr/bin/"
 			rm -rf drag
 			cigs="$cigs $cig,"
-                elif [[ -d /var/lib/drag/smoked/$cig && $1 != "-o" ]]; then
+                elif [[ -d /var/lib/drag/smoked/$cig && $override == false ]]; then
                         echo
                         echo "$cig already smoked"
 			echo "Either stub $cig first, or override this with:"
 			echo "smoke -o $cig"
                         echo
                 	cigs="$cigs $cig,"
-                elif [ $cig != "-o" ]; then
+                elif [[ $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" ]]; then
                 if [ ! -f $ashtray/$cig/.rolled ]; then
                         echo "$cig not rolled"
                         roll $cig
