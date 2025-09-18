@@ -23,7 +23,20 @@ else
         cigs=""
 	export ashtray
         for cig in "$@"; do
-		$SUDO bash -c "rm -rf $ashtray/$cig $ashtray/../stash/$cig"
+		read -p "Blaze $cig's stash (PKGBUILD)? [y/N] " burn
+		case $burn in
+			[yY])
+			$SUDO bash -c "rm -rf $ashtray/../stash/$cig";;
+			*)
+			;;
+		esac
+		read -p "Blaze $cig's ashtray (build and source)? [y/N] " burn
+		case $burn in
+			[yY])
+			$SUDO bash -c "rm -rf $ashtray/$cig";;
+			*)
+			;;
+		esac
 		cigs="$cigs $cig,"
 	done
 	cigs="${cigs%%,}"
