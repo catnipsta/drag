@@ -31,7 +31,9 @@ else
 	fi
         for cig in "$@"; do
 		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" ]]; then
+			echo
 			blaze $cig
+			echo
 		fi
 		if [ $cig == ca-certificates ]; then
                         echo "Smoking ca-certificates"
