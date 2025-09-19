@@ -114,7 +114,7 @@ for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
 	if declare -f post_install > /dev/null; then post_install; fi)
 done
 fi
-" || $SUDO bash -c "rm -rf '/var/lib/drag/smoked/$cig'"
+" || ($SUDO bash -c "rm -rf '/var/lib/drag/smoked/$cig'" && exit 1)
 
                 echo "Smoked $cig"
                 echo
