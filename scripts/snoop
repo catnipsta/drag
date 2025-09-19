@@ -23,6 +23,7 @@ else
 	cigs=""
         for cig in "$@"; do
 		mkdir -p $stash/$cig
+		echo "$EDITOR $stash/$cig/PKGBUILD"
                 $EDITOR $stash/$cig/PKGBUILD
 		cigs="$cigs $cig,"
         done
