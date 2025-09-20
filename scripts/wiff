@@ -14,7 +14,8 @@ else
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
 			echo "$cig has not been stashed."
 			echo "Attempting to stash $cig..."
-			stash -ns $cig
+			stash -ns $cig >/dev/null 2>&1 || (echo "Failed to stash $cig" && echo && exit 1)
+			echo
 		fi
 		source $stash/$cig/PKGBUILD
 		echo "$pkgname"
