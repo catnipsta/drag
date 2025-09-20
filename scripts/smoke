@@ -124,7 +124,6 @@ fi
                 fi
         done
         cigs="${cigs%%,}"
-        echo
         echo "Smoked$cigs"
         echo
         exit 0

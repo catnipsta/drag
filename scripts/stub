@@ -31,6 +31,7 @@ else
 			if [[ -f '$smoked/$cig'/clutter ]]; then
 				while IFS= read -r file; do
 					rm -fv \"\$file\"
+					rmdir \"\${file%\/*}\" 2>/dev/null
 				done < '$smoked/$cig'/clutter
 			fi
 			rm -rf '$smoked/$cig'
