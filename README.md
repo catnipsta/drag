@@ -14,7 +14,7 @@ Compile packages using the PKGBUILD's instructions</br>
 Installs packge</br>
 Use -o to smoke without stubbing first.
 Use -b to blaze before smoking.
-To update packages use either -ob or -bo.
+Use -bo or -ob to update packages without stubbing previous version.
 ### stub
 Uninstall select packages</br>
 ### wiff
