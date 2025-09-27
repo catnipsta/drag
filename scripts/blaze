@@ -26,7 +26,7 @@ else
 		read -p "Blaze $cig's stash (PKGBUILD)? [y/N] " burn
 		case $burn in
 			[yY])
-			$SUDO bash -c "rm -rf $ashtray/../stash/$cig";;
+			rm -rf $ashtray/../stash/$cig;;
 			*)
 			;;
 		esac
