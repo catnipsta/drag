@@ -48,9 +48,12 @@ else
                                 cd $srcdir
                                 $SUDO bash -c "set -e
                                 export srcdir='$srcdir'
-                                export pkgdir='$pkgdir'
+                		export pkgdir='$pkgdir_$i'
+				mkdir -p \$pkgdir
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
-                                package_'$i'"
+                                package_'$i'
+				cp -a \$pkgdir/* '$ashtray/$cig/pkg'
+				rm -rf \$pkgdir"
                         done
                 fi
                 touch $ashtray/$cig/.rolled
