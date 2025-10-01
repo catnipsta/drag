@@ -15,7 +15,7 @@ else
 			cigs+=($cig)
 		fi
 	done
-	stash ${cigs[@]}
+	[ -z $cigs ] || stash ${cigs[@]}
 
         if command -v sudo >/dev/null 2>&1; then
                 SUDO=sudo
