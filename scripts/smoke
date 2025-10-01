@@ -11,7 +11,7 @@ if [[ -z "$@" ]]; then
 else
 	cigs=()
 	for cig in "$@"; do
-		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" ]]; then
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "drag" ]]; then
 			cigs+=($cig)
 		fi
 	done
