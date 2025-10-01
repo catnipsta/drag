@@ -3,6 +3,7 @@
 set -e
 
 ashtray=$HOME/.cache/drag/ashtray
+export CARCH=$(uname -m)
 
 if [[ -z "$@" ]]; then
         echo "You can't roll that!"
@@ -40,6 +41,7 @@ else
                         $SUDO bash -c "set -e
                         export srcdir='$srcdir'
                         export pkgdir='$pkgdir'
+			export CARCH='$CARCH'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
                         if declare -f package > /dev/null; then package; else
                         package_$cig; fi"
@@ -49,6 +51,7 @@ else
                                 $SUDO bash -c "set -e
                                 export srcdir='$srcdir'
                 		export pkgdir='$pkgdir_$i'
+				export CARCH='$CARCH'
 				mkdir -p \$pkgdir
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
                                 package_'$i'
