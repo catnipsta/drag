@@ -4,6 +4,7 @@ set -e
 
 ashtray=$HOME/.cache/drag/ashtray
 export CARCH=$(uname -m)
+export CHOST=$CARCH
 
 if [[ -z "$@" ]]; then
         echo "You can't roll that!"
@@ -42,6 +43,7 @@ else
                         export srcdir='$srcdir'
                         export pkgdir='$pkgdir'
 			export CARCH='$CARCH'
+			export CHOST='$CHOST'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
                         if declare -f package > /dev/null; then package; else
                         package_$cig; fi"
@@ -52,6 +54,7 @@ else
                                 export srcdir='$srcdir'
                 		export pkgdir='$pkgdir_$i'
 				export CARCH='$CARCH'
+				export CHOST='$CHOST'
 				mkdir -p \$pkgdir
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
                                 package_'$i'
