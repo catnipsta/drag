@@ -9,6 +9,14 @@ if [[ -z "$@" ]]; then
         echo
         exit 1
 else
+	cigs=()
+	for cig in "$@"; do
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" ]]; then
+			cigs+=($cig)
+		fi
+	done
+	stash ${cigs[@]}
+
         if command -v sudo >/dev/null 2>&1; then
                 SUDO=sudo
         elif command -v doas >/dev/null 2>&1; then
