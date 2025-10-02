@@ -90,13 +90,14 @@ else
                         echo "$cig not rolled"
                         roll $cig
 		elif [ $binary == true ]; then
+			[ -d $ashtray/$cig/pkg* ] && $SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
+			rm -rf $ashtray/$cig
+			mkdir -p $ashtray/$cig
+			cd $ashtray/$cig
 			echo "Downloading $cig x86_64 binary"
 			echo "SIGNATURE CHECK UNSUPPORTED FOR BINARIES!"
 			echo "BE WARNED!"
 			echo
-			rm -rf $ashtray/$cig
-			mkdir -p $ashtray/$cig
-			cd $ashtray/$cig
 			curl -LO https://archlinux.org/packages/core/x86_64/$cig/download/
 			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/extra/x86_64/$cig/download/)
 			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/multilib/x86_64/$cig/download/)
