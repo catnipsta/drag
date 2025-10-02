@@ -108,7 +108,7 @@ else
 			zstd -cd ../$cig.tar.zst | tar xf -
 			pkgver=$(cat .PKGINFO | grep pkgver)
 			pkgver=${pkgver:9}
-			echo $pkgver > ../ver
+			echo "$pkgver Arch Linux Binary" > ../ver
 			rm -f .PKGINFO .BUILDINFO .MTREE
                 fi
                 if [[ -z $(ls $ashtray/$cig/pkg) ]]; then

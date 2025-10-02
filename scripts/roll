@@ -59,7 +59,7 @@ else
 				mkdir -p \$pkgdir
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
                                 package_'$i'
-				cp -a \$pkgdir/* '$ashtray/$cig/pkg'
+				cp -a \$pkgdir/* '$ashtray/$cig/pkg' || true
 				rm -rf \$pkgdir"
                         done
                 fi
