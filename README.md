@@ -15,6 +15,7 @@ Installs packge</br>
 Use -o to smoke without stubbing first.
 Use -b to blaze before smoking.
 Use -bo or -ob to update packages without stubbing previous version.
+Use --binary-x86_64 to download the x86_64 Arch Linux binary
 ### stub
 Uninstall select packages</br>
 ### wiff
