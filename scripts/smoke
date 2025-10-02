@@ -9,14 +9,6 @@ if [[ -z "$@" ]]; then
         echo
         exit 1
 else
-	cigs=()
-	for cig in "$@"; do
-		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "drag" ]]; then
-			cigs+=($cig)
-		fi
-	done
-	[ -z $cigs ] || stash ${cigs[@]}
-
         if command -v sudo >/dev/null 2>&1; then
                 SUDO=sudo
         elif command -v doas >/dev/null 2>&1; then
@@ -31,14 +23,29 @@ else
         cigs=""
 	override=false
 	blaze=false
+	binary=false
 	if [[ "$@" == "-o "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
 		override=true
 	fi
 	if [[ "$@" == "-b "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
 		blaze=true
 	fi
+	if [[ "$@" == *"--binary-x86_64 "* ]]; then
+		binary=true
+	fi
+
+	cigs=()
+	if [ $binary == false ]; then
+	for cig in "$@"; do
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--binary-x86_64" && $cig != "drag" ]]; then
+			cigs+=($cig)
+		fi
+	done
+	[ -z $cigs ] || stash ${cigs[@]}
+	fi
+
         for cig in "$@"; do
-		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" ]]; then
+		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--binary-x86_64" ]]; then
 			echo
 			blaze $cig
 			echo
@@ -78,10 +85,28 @@ else
 			echo "smoke -o $cig"
                         echo
                 	cigs="$cigs $cig,"
-                elif [[ $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" ]]; then
-                if [ ! -f $ashtray/$cig/.rolled ]; then
+                elif [[ $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--binary-x86_64" ]]; then
+                if [[ ! -f $ashtray/$cig/.rolled && $binary == false ]]; then
                         echo "$cig not rolled"
                         roll $cig
+		elif [ $binary == true ]; then
+			echo "Downloading $cig x86_64 binary"
+			echo
+			rm -rf $ashtray/$cig
+			mkdir -p $ashtray/$cig
+			cd $ashtray/$cig
+			curl -LO https://archlinux.org/packages/core/x86_64/$cig/download/
+			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/extra/x86_64/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/multilib/x86_64/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && echo "$cig x86_64 binary not found" && exit 1)
+			mv download $cig.tar.zst
+			mkdir pkg
+			cd pkg
+			zstd -cd ../$cig.tar.zst | tar xf -
+			pkgver=$(cat .PKGINFO | grep pkgver)
+			pkgver=${pkgver:9}
+			echo $pkgver > ../ver
+			rm -f .PKGINFO .BUILDINFO .MTREE
                 fi
                 if [[ -z $(ls $ashtray/$cig/pkg) ]]; then
                         rm $ashtray/$cig/.rolled
