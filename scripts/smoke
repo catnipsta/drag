@@ -91,6 +91,8 @@ else
                         roll $cig
 		elif [ $binary == true ]; then
 			echo "Downloading $cig x86_64 binary"
+			echo "SIGNATURE CHECK UNSUPPORTED FOR BINARIES!"
+			echo "BE WARNED!"
 			echo
 			rm -rf $ashtray/$cig
 			mkdir -p $ashtray/$cig
