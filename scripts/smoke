@@ -78,6 +78,7 @@ else
 			$SUDO bash -c "cp drag/scripts/* /usr/bin/"
 			rm -rf drag
 			cigs="$cigs $cig,"
+			echo
                 elif [[ -d /var/lib/drag/smoked/$cig && $override == false ]]; then
                         echo
                         echo "$cig already smoked"
