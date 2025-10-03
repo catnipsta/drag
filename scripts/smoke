@@ -20,7 +20,6 @@ else
 	        SUDO=
         fi
         [[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
-        cigs=""
 	override=false
 	blaze=false
 	binary=false
@@ -30,22 +29,23 @@ else
 	if [[ "$@" == "-b "* || "$@" == "-bo "* || "$@" == "-ob "* ]]; then
 		blaze=true
 	fi
-	if [[ "$@" == *"--binary-x86_64 "* ]]; then
+	if [[ "$@" == *"--bin64 "* ]]; then
 		binary=true
 	fi
 
 	cigs=()
 	if [ $binary == false ]; then
 	for cig in "$@"; do
-		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--binary-x86_64" && $cig != "drag" ]]; then
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD  && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" ]]; then
 			cigs+=($cig)
 		fi
 	done
 	[ -z $cigs ] || stash ${cigs[@]}
 	fi
+        cigs=""
 
         for cig in "$@"; do
-		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--binary-x86_64" ]]; then
+		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--bin64" ]]; then
 			echo
 			blaze $cig
 			echo
@@ -85,7 +85,7 @@ else
 			echo "smoke -o $cig"
                         echo
                 	cigs="$cigs $cig,"
-                elif [[ $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--binary-x86_64" ]]; then
+                elif [[ $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--bin64" ]]; then
                 if [[ ! -f $ashtray/$cig/.rolled && $binary == false ]]; then
                         echo "$cig not rolled"
                         roll $cig
