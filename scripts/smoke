@@ -101,6 +101,9 @@ else
 			curl -LO https://archlinux.org/packages/core/x86_64/$cig/download/
 			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/extra/x86_64/$cig/download/)
 			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/multilib/x86_64/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/core/any/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/extra/any/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/multilib/any/$cig/download/)
 			(file download | grep Zst >/dev/null) || (rm download && echo "$cig x86_64 binary not found" && exit 1)
 			mv download $cig.tar.zst
 			mkdir pkg
