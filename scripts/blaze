@@ -26,7 +26,7 @@ else
 		read -p "Blaze $cig's ashtray (build and source)? [y/N] " burn
 		case $burn in
 			[yY])
-			[ -d $ashtray/$cig/pkg* ] && $SUDO bash -c "rm -rf $ashtray/$cig" || rm -rf $ashtray/$cig
+			$SUDO bash -c "rm -rf $ashtray/$cig"
 			read -p "Blaze $cig's stash (PKGBUILD)? [y/N] " burn
 			case $burn in
 				[yY])

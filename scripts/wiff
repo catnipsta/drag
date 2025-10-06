@@ -19,7 +19,7 @@ else
 		fi
 		source $stash/$cig/PKGBUILD
 		echo "$pkgname"
-		echo "Latest version: $pkgver"
+		echo "Stashed version: $pkgver"
 		if [ -d /var/lib/drag/smoked/$cig ]; then
 			echo "Smoked version: $(cat /var/lib/drag/smoked/$cig/ver)"
 		else
