@@ -13,6 +13,11 @@ if [[ -z "$@" ]]; then
 else
         cigs=""
         for cig in "$@"; do
+                if [[ ! -f $ashtray/../stash/$cig/PKGBUILD ]]; then
+			echo "$cig not stashed"
+			stash $cig
+			pinch $cig
+		fi
                 if [[ ! -f $ashtray/$cig/.pnch ]]; then
                         echo "$cig not pinched"
                         pinch $cig
