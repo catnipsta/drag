@@ -49,9 +49,9 @@ else
 			"
 		fi
 		echo "Stubbed $cig"
+		echo
 		cigs="$cigs $cig,"
 	done
-	echo
 	cigs="${cigs%%,}"
 	echo "Stubbed$cigs"
 	echo
