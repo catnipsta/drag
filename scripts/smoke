@@ -36,7 +36,7 @@ else
 	cigs=()
 	if [ $binary == false ]; then
 	for cig in "$@"; do
-		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" && ( ! -d /var/lib/drag/smoked/$cig && override == false ) ]]; then
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" && ( ! -d /var/lib/drag/smoked/$cig && $override == false ) ]]; then
 			cigs+=($cig)
 		fi
 	done
