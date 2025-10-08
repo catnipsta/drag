@@ -50,8 +50,8 @@ else
 			cigs+=($cig)
 		fi
 	done
-	fi
 	blaze ${cigs[@]}
+	fi
         cigs=""
 
         for cig in "$@"; do
