@@ -38,6 +38,7 @@ else
 			;;
 		esac
 		cigs="$cigs $cig,"
+		echo
 	done
 	cigs="${cigs%%,}"
         echo

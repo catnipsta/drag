@@ -42,14 +42,19 @@ else
 	done
 	[ -z $cigs ] || stash ${cigs[@]}
 	fi
+
+	cigs=()
+	if [ $blaze == true ]; then
+	for cig in "$@"; do
+		if [[ $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" ]]; then
+			cigs+=($cig)
+		fi
+	done
+	fi
+	blaze ${cigs[@]}
         cigs=""
 
         for cig in "$@"; do
-		if [[ $blaze == true && $cig != "-o" && $cig != "-b" && $cig != "-ob" && $cig != "-bo" && $cig != "--bin64" ]]; then
-			echo
-			blaze $cig
-			echo
-		fi
 		if [ $cig == ca-certificates ]; then
                         echo "Smoking ca-certificates"
                         mkdir -p $ashtray/$cig/src
