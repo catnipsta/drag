@@ -41,7 +41,6 @@ else
 		echo
 	done
 	cigs="${cigs%%,}"
-        echo
         echo "Blazed$cigs"
 	echo
 	exit 0
