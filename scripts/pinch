@@ -25,7 +25,7 @@ else
                        		SUDO="su root"
 	                fi 
 			export ashtray cig
-			$SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
+			$SUDO bash -c "rm -rf '$ashtray/$cig'"
 		fi
 		rm -rf $ashtray/$cig/
 		mkdir -p $ashtray/$cig/src

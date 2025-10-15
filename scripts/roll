@@ -4,7 +4,7 @@ set -e
 
 ashtray=$HOME/.cache/drag/ashtray
 export CARCH=$(uname -m)
-export CHOST=$CARCH
+export CHOST=$(cc -dumpmachine)
 
 if [[ -z "$@" ]]; then
         echo "You can't roll that!"
@@ -35,10 +35,9 @@ else
                         SUDO=
                 fi
 		[[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
-		export pkgdir
                 [ -d $pkgdir ] && $SUDO bash -c "rm -rf '$pkgdir'"
                 rm -f $ashtray/$cig/.rolled
-                source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                (source $HOME/.cache/drag/stash/$cig/PKGBUILD
                 if declare -f prepare > /dev/null && [ ! -f $ashtray/$cig/.prp ]; then cd $srcdir; prepare; touch $ashtray/$cig/.prp; fi
                 if declare -f build > /dev/null && [ ! -f $ashtray/$cig/.bld ]; then cd $srcdir; build; touch $ashtray/$cig/.bld; fi
                 if declare -f check > /dev/null && [ ! -f $ashtray/$cig/.chk ]; then cd $srcdir; check; touch $ashtray/$cig/.chk; fi
@@ -46,10 +45,6 @@ else
                 if [ ${#pkgname[@]} == 1 ]; then
                         cd $srcdir
                         $SUDO bash -c "set -e
-                        export srcdir='$srcdir'
-                        export pkgdir='$pkgdir'
-			export CARCH='$CARCH'
-			export CHOST='$CHOST'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
                         if declare -f package > /dev/null; then package; else
                         package_$cig; fi"
@@ -57,17 +52,14 @@ else
                         for i in ${pkgname[@]}; do
                                 cd $srcdir
                                 $SUDO bash -c "set -e
-                                export srcdir='$srcdir'
-                		export pkgdir='$pkgdir_$i'
-				export CARCH='$CARCH'
-				export CHOST='$CHOST'
+                		export pkgdir=$pkgdir-$i
 				mkdir -p \$pkgdir
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
-                                package_'$i'
-				cp -a \$pkgdir/* '$ashtray/$cig/pkg' || true
+                                package_$i
+				cp -a \$pkgdir/* $HOME/.cache/drag/ashtray/$cig/pkg || true
 				rm -rf \$pkgdir"
                         done
-                fi
+                fi)
                 touch $ashtray/$cig/.rolled
                 echo
                 echo "Rolled $cig"
