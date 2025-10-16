@@ -12,10 +12,10 @@ Download the source files listed in the PKGBUILDs</br>
 Compile packages using the PKGBUILD's instructions</br>
 ### smoke
 Installs packge</br>
-Use -o to smoke without stubbing first.</br>
-Use -b to blaze before smoking.</br>
-Use -bo or -ob to update packages without stubbing previous version.</br>
-Use --bin64 to download the x86_64 Arch Linux binary</br>
+-o to smoke without stubbing first.</br>
+-b to blaze before smoking.</br>
+-bo or -ob to update packages without stubbing previous version.</br>
+--bin64 to download the x86_64 Arch Linux binary</br>
 ### stub
 Uninstall select packages</br>
 ### wiff
