@@ -45,6 +45,7 @@ else
                 if [ ${#pkgname[@]} == 1 ]; then
                         cd $srcdir
                         $SUDO bash -c "set -e
+			export pkgdir='$pkgdir'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
                         if declare -f package > /dev/null; then package; else
                         package_$cig; fi"
