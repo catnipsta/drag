@@ -152,15 +152,15 @@ while IFS= read -r file; do
 		chmod -v \"\$mode\" \"\${file#*'$cig'/pkg}\"
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
-
+" || ($SUDO bash -c "rm -rf '/var/lib/drag/smoked/$cig'" && exit 1)
+		$SUDO bash -c "set +e
 cd /
 if [ -d '$ashtray/../stash/$cig' ]; then 
 for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
 	(source \"\$i\"
 	if declare -f post_install > /dev/null; then post_install || true; fi)
 done
-fi
-" || ($SUDO bash -c "rm -rf '/var/lib/drag/smoked/$cig'" && exit 1)
+fi"
 
                 echo "Smoked $cig"
                 echo
