@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -e
+
+ashtray=$HOME/.cache/drag/ashtray
+export CARCH=$(uname -m)
+export CHOST=$(cc -dumpmachine)
+
+if [[ -z "$@" ]]; then
+        echo "You can't roll that!"
+        echo
+        exit 1
+else
+        cigs=""
+        for cig in "$@"; do
+                if [[ ! -f $ashtray/../stash/$cig/PKGBUILD ]]; then
+			echo "$cig not stashed"
+			stash $cig
+			pinch $cig
+		fi
+                if [[ ! -f $ashtray/$cig/.pnch ]]; then
+                        echo "$cig not pinched"
+                        pinch $cig
+                fi
+                export srcdir=$ashtray/$cig/src
+                export pkgdir=$ashtray/$cig/pkg
+                if command -v sudo >/dev/null 2>&1; then
+                        SUDO=sudo
+                elif command -v doas >/dev/null 2>&1; then
+                        SUDO=doas
+                elif command -v su >/dev/null 2>&1; then
+                        SUDO="su root"
+                fi
+                if [ $EUID == 0 ]; then
+                        SUDO=
+                fi
+		[[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
+                [ -d $pkgdir ] && $SUDO bash -c "rm -rf '$pkgdir'"
+                rm -f $ashtray/$cig/.rolled
+                (source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                if declare -f prepare > /dev/null && [ ! -f $ashtray/$cig/.prp ]; then cd $srcdir; prepare; touch $ashtray/$cig/.prp; fi
+                if declare -f build > /dev/null && [ ! -f $ashtray/$cig/.bld ]; then cd $srcdir; build; touch $ashtray/$cig/.bld; fi
+                if declare -f check > /dev/null && [ ! -f $ashtray/$cig/.chk ]; then cd $srcdir; check; touch $ashtray/$cig/.chk; fi
+		mkdir -p $pkgdir
+                if [ ${#pkgname[@]} == 1 ]; then
+                        cd $srcdir
+                        $SUDO bash -c "set -e
+			export srcdir='$srcdir'
+			export pkgdir='$pkgdir'
+			export CARCH='$CARCH'
+			export CHOST='$CHOST'
+                        source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                        if declare -f package > /dev/null; then package; else
+                        package_$cig; fi"
+                else
+                        for i in ${pkgname[@]}; do
+                                cd $srcdir
+                                $SUDO bash -c "set -e
+				export srcdir='$srcdir'
+                		export pkgdir=$pkgdir-$i
+				export CARCH='$CARCH'
+				export CHOST='$CHOST'
+				mkdir -p \$pkgdir
+                                source $HOME/.cache/drag/stash/$cig/PKGBUILD
+                                package_$i
+				cp -a \$pkgdir/* $HOME/.cache/drag/ashtray/$cig/pkg || true
+				rm -rf \$pkgdir"
+                        done
+                fi)
+                touch $ashtray/$cig/.rolled
+                echo
+                echo "Rolled $cig"
+                echo
+                cigs="$cigs $cig,"
+        done
+        cigs="${cigs%%,}"
+        echo
+        echo "Rolled$cigs"
+        echo
+        exit 0
+fi

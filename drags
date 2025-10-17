@@ -1,0 +1,2 @@
+#!/bin/bash
+echo $(find /var/lib/drag/smoked/* -maxdepth 0 -exec basename {} \;)

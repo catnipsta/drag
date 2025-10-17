@@ -1,0 +1,213 @@
+#!/bin/bash
+
+set -e
+
+stash=$HOME/.cache/drag/stash
+ashtray=$HOME/.cache/drag/ashtray
+
+if [[ -z "$@" ]]; then
+	echo "You can't pinch that!"
+	echo
+	exit 1
+else
+	cigs=""
+	for cig in "$@"; do
+		if [ ! -f $stash/$cig/PKGBUILD ]; then
+			echo "$cig not stashed"
+			stash $cig
+		fi
+		if [ -d $ashtray/$cig/pkg ]; then
+			if command -v sudo >/dev/null 2>&1; then
+	                        SUDO=sudo
+	                elif command -v doas >/dev/null 2>&1; then
+	                        SUDO=doas
+	                elif command -v su >/dev/null 2>&1; then
+                       		SUDO="su root"
+	                fi 
+			export ashtray cig
+			$SUDO bash -c "rm -rf '$ashtray/$cig'"
+		fi
+		rm -rf $ashtray/$cig/
+		mkdir -p $ashtray/$cig/src
+		source=()
+		validpgpkeys=()
+		sha256sums=()
+		sha512sums=()
+		b2sums=()
+		md5sums=()
+		source $stash/$cig/PKGBUILD
+		echo $cig
+		echo "$pkgver" | tee $ashtray/$cig/ver
+		for i in "${!source[@]}"; do
+			if [[ ("${source[$i]}" == *".git"* || "${source[$i]}" == *"git+"* || "${source[$i]}" == *"git://"* ) && "${source[$i]}" != *".git"*"/"* ]]; then
+				if [[ ${source[$i]} == *::* ]]; then
+					name="${source[$i]%%::*}"
+				else
+					name="${source[$i]##*/}"
+					name="${name%%.git*}"
+					name="${name%%#*}"
+					name="${name%%\?*}"
+				fi
+				url="${source[$i]#*git+}"
+				url="${url#*::}"
+				commit="${url##*commit=}"
+				commit="${commit%%\&*}"
+				commit="${commit%%\?*}"
+				tag="${url##*tag=}"
+				tag="${tag%%\&*}"
+				tag="${tag%%\?*}"
+				branch="${url##*branch=}"
+				branch="${branch%%\&*}"
+				branch="${branch%%\?*}"
+				url="${url%%\?*}"
+				url="${url%%#*}"
+				if [[ ${source[$i]} == *commit=* ]]; then
+					git clone $url $ashtray/$cig/src/$name
+					git -C $ashtray/$cig/src/$name checkout $commit
+					echo "Skipping GPG Verification, using commit."
+					echo
+				elif [[ ${source[$i]} == *tag=* ]]; then
+					git clone --branch $tag $url $ashtray/$cig/src/$name || git clone $url $ashtray/$cig/src/$name
+					key=$(cd $ashtray/$cig/src/$name && git tag -v $tag 2>&1 | grep "RSA key") || key=joemama
+					key=${key##*key }
+					if [[ "${validpgpkeys[*]}" == *"$key"* ]]; then
+						echo "Verified GPG key for $name!"
+					elif [[ -z "${validpgpkeys[*]}" ]]; then
+						echo
+						echo "SKIPPING GPG VERIFICATION FOR $name!"
+						echo "BE WARNED!!!"
+						echo
+					else
+						echo "GPG VERIFICATION FAILED FOR $name!"
+						if ! command -v gpg >/dev/null 2>&1; then
+						echo "(You don't have gnupg)"
+						echo "SKIPPING GPG VERIFICATION FOR $name!"
+						echo "BE WARNED!!!"
+						echo
+						else
+						read -p "Continue anyway? [y/N] " choice
+						case $choice in
+							[yY])
+							;;
+							*)
+							rm -rf $ashtray/$cig/src
+							exit 1;;
+						esac
+						echo
+						fi
+					fi
+				elif [[ ${source[$i]} == *branch=* ]]; then
+					git clone --branch $branch $url $ashtray/$cig/src/$name || git clone $url $ashtray/$cig/src/$name
+					echo "Skipping GPG Verification, using branch."
+					echo
+				else
+					git clone $url $ashtray/$cig/src/$name
+					echo
+					echo "SKIPPING GPG VERIFICATION FOR $name!"
+					echo "BE WARNED!!!"
+					echo
+				fi
+			elif [[ "${source[$i]}" == *hg+* ]]; then
+				echo "WARNING: Mercurial is not fully supported by drag"
+				if [[ ${source[$i]} == *::* ]]; then
+					name="${source[$i]%%::*}"
+				else
+					name="${source[$i]##*/}"
+					name="${name%%#*}"
+					name="${name%%\?*}"
+				fi
+				url="${source[$i]#*hg+}"
+				url="${url#*::}"
+				url="${url%%\?*}"
+				url="${url%%#*}"
+				cd $ashtray/$cig/src
+				hg clone $url
+			else
+				if [[ ${source[$i]} == *::* ]]; then
+					name=${source[$i]%%::*}
+				else
+					name=${source[$i]##*/}
+				fi
+				if [[ ${source[$i]} == *"http://"* || ${source[$i]} == *"https://"* || ${source[$i]} == *"ftp://"* ]]; then
+					echo "Downloading $name"
+				else
+					cp $stash/$cig/$name $ashtray/$cig/src/$name
+				fi
+				if [[ "${source[$i]}" == *"http://"* || ${source[$i]} == *"https://"* ]]; then
+					curl -Lo $ashtray/$cig/src/$name "http${source[$i]#*http}"
+				elif [[ ${source[$i]} == *"ftp://"* ]]; then
+					curl -Lo $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
+				fi
+				if [[ -n $sha256sums ]]; then
+					actual=$(sha256sum $ashtray/$cig/src/$name)
+					expected=${sha256sums[$i]}
+				elif [[ -n $sha512sums ]]; then
+					actual=$(sha512sum $ashtray/$cig/src/$name)
+					expected=${sha512sums[$i]}
+				elif [[ -n $b2sums ]]; then
+					actual=$(b2sum $ashtray/$cig/src/$name)
+					expected=${b2sums[$i]}
+				elif [[ -n $md5sums ]]; then
+					actual=$(md5sum $ashtray/$cig/src/$name)
+					expected=${md5sums[$i]}
+				else
+					actual=""
+					expected="SKIP"
+					echo "Checksum skipped for $name"
+					echo
+				fi
+				actual=${actual%%\ *}
+				if [[ $actual == $expected ]]; then
+					echo "Checksum matched for $name"
+				elif [[ $expected == SKIP ]]; then
+					echo "Checksum skipped for $name"
+				else
+					echo "CHECKSUM VALIDATION FAILED FOR $name"
+					echo "Expected: $expected"
+					echo "Actual:   $actual"
+					read -p "Continue anyway? [y/N] " choice
+					case $choice in
+						[yY])
+						;;
+						*)
+						rm -rf $ashtray/$cig/src
+						exit 1;;
+					esac
+					echo
+				fi
+			fi
+		done
+		cd $ashtray/$cig/src
+		for i in *; do
+                        if [[ "${noextract[*]}" != *$i* ]]; then
+                                case $i in
+                                        *.tar.gz|*.tgz)
+                                                tar xzf $i;;
+                                        *.tar.bz2|*.tar|*.tbz)
+                                                tar xf $i;;
+                                        *.tar.xz)
+                                                tar xJf $i;;
+					*.tar.zst)
+						zstd -cd $i | tar xf -;;
+					*.tar.lz)
+						lzip -cd $i | tar xf -;;
+                                        *.zip)
+                                                unzip $i;;
+                                        *.gz)
+                                                gzip -d $i;;
+                                        *.bz2)
+                                                bzip2 -d $i;;
+                                        *.xz)
+                                                unxz $i;;
+                                esac
+                        fi
+                done
+		touch $ashtray/$cig/.pnch
+		cigs="$cigs $cig,"
+	done
+	cigs="${cigs%%,}"
+	echo
+	echo "Pinched$cigs"
+	echo
+	exit 0
+fi

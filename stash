@@ -1,0 +1,56 @@
+#!/bin/bash
+
+stash=$HOME/.cache/drag/stash
+
+mkdir -p $stash
+
+if [[ -z "$@" ]]; then
+        echo "You can't stash that!"
+	echo
+	exit 1
+else
+	cigs=""
+	for cig in "$@"; do
+		if [ $cig != "-ns" ]; then
+		echo "Taking a drag..."
+		tmp=$(mktemp)
+		curl -Lo $tmp https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
+		if file $tmp | grep -q "gzip"; then
+			echo "Stashed $cig from Arch's repo"
+			cigs="$cigs $cig,"
+			if [ -d $stash/$cig ]; then
+				rm -rf $stash/$cig
+			fi
+			tar -xzf $tmp -C $stash/
+			mv $stash/$cig-main $stash/$cig
+		else
+			rm $tmp
+			curl -Lo $tmp https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
+			if file $tmp | grep -q "gzip"; then
+				echo "Stashed $cig from the AUR"
+				cigs="$cigs $cig,"
+				if [ -d $stash/$cig ]; then
+					rm -rf $stash/$cig
+				fi
+				tar -xzf $tmp -C $stash/
+			else
+				echo
+				echo "Could not find $cig in Arch's main repo or the AUR!"
+				cigs="${cigs%%,}"
+				if [[ -n "$cigs" ]]; then
+					echo "Stashed$cigs"
+				fi
+				echo
+				exit 1
+			fi
+		fi
+		rm $tmp
+		fi
+	done
+	cigs="${cigs%%,}"
+	[ $1 != "-ns" ] && snoop $@
+	echo
+	echo "Stashed$cigs"
+	echo
+	exit 0
+fi

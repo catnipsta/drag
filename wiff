@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+stash=$HOME/.cache/drag/stash
+
+if [[ -z "$@" ]]; then
+	echo "You can't wiff that!"
+	echo
+	exit 1
+else
+	for cig in "$@"; do
+		echo
+		if [ ! -f $stash/$cig/PKGBUILD ]; then
+			echo "$cig has not been stashed."
+			echo "Attempting to stash $cig..."
+			stash -ns $cig >/dev/null 2>&1 || (echo "Failed to stash $cig" && echo && exit 1)
+			echo
+		fi
+		source $stash/$cig/PKGBUILD
+		echo "$pkgname"
+		echo "Stashed version: $pkgver"
+		if [ -d /var/lib/drag/smoked/$cig ]; then
+			echo "Smoked version: $(cat /var/lib/drag/smoked/$cig/ver)"
+		else
+			echo "$cig not smoked"
+		fi
+		echo
+		echo $pkgdesc 
+		echo "Provides: ${provides[*]}"
+		echo
+		echo "Depends: ${depends[*]}"
+                echo "Optional depends: ${optdepends[*]}"
+                echo "Make depends: ${makedepends[*]}"
+		echo "Check depends: ${checkdepends[*]}"
+		echo "Conflicts: ${conflicts[*]}"
+		echo
+	done
+	exit 0
+fi
