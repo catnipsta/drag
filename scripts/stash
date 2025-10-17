@@ -46,7 +46,6 @@ else
 		fi
 		rm $tmp
 		fi
-		sed -i '/PKG_CONFIG=/d' $stash/$cig/PKGBUILD
 	done
 	cigs="${cigs%%,}"
 	[ $1 != "-ns" ] && snoop $@
