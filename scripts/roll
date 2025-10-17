@@ -45,7 +45,10 @@ else
                 if [ ${#pkgname[@]} == 1 ]; then
                         cd $srcdir
                         $SUDO bash -c "set -e
+			export srcdir='$srcdir'
 			export pkgdir='$pkgdir'
+			export CARCH='$CARCH'
+			export CHOST='$CHOST'
                         source $HOME/.cache/drag/stash/$cig/PKGBUILD
                         if declare -f package > /dev/null; then package; else
                         package_$cig; fi"
@@ -53,7 +56,10 @@ else
                         for i in ${pkgname[@]}; do
                                 cd $srcdir
                                 $SUDO bash -c "set -e
+				export srcdir='$srcdir'
                 		export pkgdir=$pkgdir-$i
+				export CARCH='$CARCH'
+				export CHOST='$CHOST'
 				mkdir -p \$pkgdir
                                 source $HOME/.cache/drag/stash/$cig/PKGBUILD
                                 package_$i
