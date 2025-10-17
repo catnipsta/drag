@@ -40,10 +40,11 @@ else
 			rm -rf '$smoked/$cig'
 
 			cd /
-			if [ -d '$ashtray/../stash/$cig' ]; then 
+			if [ -d '$ashtray/../stash/$cig' ]; then
+			set +e
 			for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
 			        (source \"\$i\"
-			        if declare -f post_remove > /dev/null; then post_remove; fi)
+			        if declare -f post_remove > /dev/null; then post_remove || true; fi)
 			done
 			fi
 			"
