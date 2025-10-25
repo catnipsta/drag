@@ -27,10 +27,10 @@ else
 			echo
 		else
 			export smoked cig
-	                $SUDO bash -c "
+	                $SUDO drag bash -c "
 			if [[ -f '$smoked/$cig'/clutter ]]; then
 				while IFS= read -r file; do
-					rm -fv \"\$file\"
+					rm -f \"\$file\"
 					while [[ ! -z \"\$file\" ]]; do
 						file=\"\${file%\/*}\"
 						rmdir \"\$file\" 2>/dev/null

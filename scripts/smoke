@@ -56,11 +56,12 @@ else
 
         for cig in "$@"; do
 		if [ $cig == ca-certificates ]; then
+			echo
                         echo "Smoking ca-certificates"
                         mkdir -p $ashtray/$cig/src
                         cd $ashtray/$cig/src
-                        curl -Lqo ca-certificates.crt https://curl.se/ca/cacert.pem
-                        curl -Lqo certsha256sum       https://curl.se/ca/cacert.pem.sha256
+                        drag curl -Lqo ca-certificates.crt https://curl.se/ca/cacert.pem
+                        drag curl -Lqo certsha256sum       https://curl.se/ca/cacert.pem.sha256
                         actual=$(sha256sum ca-certificates.crt)
                         actual=${actual%%\ *}
                         if [[ "$(cat certsha256sum)" == *$actual* ]]; then
@@ -76,9 +77,10 @@ else
                                 exit 1
                         fi
 		elif [ $cig == drag ]; then
+			echo
 			echo "Smoking drag"
 			cd $ashtray
-			git clone https://github.com/catnipsta/drag
+			drag git clone https://github.com/catnipsta/drag
 			chmod +x drag/scripts/*
 			$SUDO bash -c "cp drag/scripts/* /usr/bin/"
 			rm -rf drag
@@ -103,12 +105,12 @@ else
 			echo "SIGNATURE CHECK UNSUPPORTED FOR BINARIES!"
 			echo "BE WARNED!"
 			echo
-			curl -LO https://archlinux.org/packages/core/x86_64/$cig/download/
-			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/extra/x86_64/$cig/download/)
-			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/multilib/x86_64/$cig/download/)
-			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/core/any/$cig/download/)
-			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/extra/any/$cig/download/)
-			(file download | grep Zst >/dev/null) || (rm download && curl -LO https://archlinux.org/packages/multilib/any/$cig/download/)
+			drag curl -LO https://archlinux.org/packages/core/x86_64/$cig/download/
+			(file download | grep Zst >/dev/null) || (rm download && drag curl -LO https://archlinux.org/packages/extra/x86_64/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && drag curl -LO https://archlinux.org/packages/multilib/x86_64/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && drag curl -LO https://archlinux.org/packages/core/any/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && drag curl -LO https://archlinux.org/packages/extra/any/$cig/download/)
+			(file download | grep Zst >/dev/null) || (rm download && drag curl -LO https://archlinux.org/packages/multilib/any/$cig/download/)
 			(file download | grep Zst >/dev/null) || (rm download && echo "$cig x86_64 binary not found" && exit 1)
 			mv download $cig.tar.zst
 			mkdir pkg
@@ -128,8 +130,8 @@ else
                 fi
 
                 export ashtray cig
-
-                $SUDO bash -c "set -e
+		
+                $SUDO drag bash -c "set -e
 mkdir -p '/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
 while IFS= read -r file; do
@@ -138,22 +140,23 @@ while IFS= read -r file; do
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
                 if [[ \$cig != file ]]; then
-			install -vm\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+			install -m\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
 		else
-			cp -av '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
+			cp -a '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
 		fi
         elif [[ \"\$(file \"\$file\")\" == *\": \"*\"symbolic link\"* ]]; then
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
-		ln -sfv \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
+		ln -sf \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
 	else
 		mode=\"\$(stat -c %a \"\$file\")\"
-		mkdir -vp \"\${file#*'$cig'/pkg}\"
-		chmod -v \"\$mode\" \"\${file#*'$cig'/pkg}\"
+		mkdir -p \"\${file#*'$cig'/pkg}\"
+		chmod \"\$mode\" \"\${file#*'$cig'/pkg}\"
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
 " || ($SUDO bash -c "rm -rf '/var/lib/drag/smoked/$cig'" && exit 1)
-		$SUDO bash -c "set +e
+		printf "\033[A\r"
+		$SUDO drag bash -c "set +e
 cd /
 if [ -d '$ashtray/../stash/$cig' ]; then 
 for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
@@ -163,7 +166,7 @@ done
 fi"
 
                 echo "Smoked $cig"
-                echo
+		echo
                 cigs="$cigs $cig,"
                 fi
         done

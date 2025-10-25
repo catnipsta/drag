@@ -12,9 +12,12 @@ else
 	cigs=""
 	for cig in "$@"; do
 		if [ $cig != "-ns" ]; then
+		echo
 		echo "Taking a drag..."
 		tmp=$(mktemp)
-		curl -Lo $tmp https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
+		echo
+		echo curl -Lo $tmp https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
+		drag curl -Lo $tmp https://gitlab.archlinux.org/archlinux/packaging/packages/$cig/-/archive/main/$cig-main.tar.gz
 		if file $tmp | grep -q "gzip"; then
 			echo "Stashed $cig from Arch's repo"
 			cigs="$cigs $cig,"
@@ -25,7 +28,9 @@ else
 			mv $stash/$cig-main $stash/$cig
 		else
 			rm $tmp
-			curl -Lo $tmp https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
+			echo
+			echo curl -Lo $tmp https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
+			drag curl -Lo $tmp https://aur.archlinux.org/cgit/aur.git/snapshot/$cig.tar.gz
 			if file $tmp | grep -q "gzip"; then
 				echo "Stashed $cig from the AUR"
 				cigs="$cigs $cig,"

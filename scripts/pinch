@@ -12,6 +12,7 @@ if [[ -z "$@" ]]; then
 else
 	cigs=""
 	for cig in "$@"; do
+		echo
 		if [ ! -f $stash/$cig/PKGBUILD ]; then
 			echo "$cig not stashed"
 			stash $cig
@@ -25,9 +26,9 @@ else
                        		SUDO="su root"
 	                fi 
 			export ashtray cig
-			$SUDO bash -c "rm -rf '$ashtray/$cig'"
+			$SUDO drag bash -c "rm -rf '$ashtray/$cig'"
 		fi
-		rm -rf $ashtray/$cig/
+		drag rm -rf $ashtray/$cig/
 		mkdir -p $ashtray/$cig/src
 		source=()
 		validpgpkeys=()
@@ -61,14 +62,16 @@ else
 				branch="${branch%%\?*}"
 				url="${url%%\?*}"
 				url="${url%%#*}"
+				echo
+				echo "Cloning $url"
 				if [[ ${source[$i]} == *commit=* ]]; then
-					git clone $url $ashtray/$cig/src/$name
-					git -C $ashtray/$cig/src/$name checkout $commit
+					drag git clone $url $ashtray/$cig/src/$name
+					drag git -C $ashtray/$cig/src/$name checkout $commit
 					echo "Skipping GPG Verification, using commit."
 					echo
 				elif [[ ${source[$i]} == *tag=* ]]; then
-					git clone --branch $tag $url $ashtray/$cig/src/$name || git clone $url $ashtray/$cig/src/$name
-					key=$(cd $ashtray/$cig/src/$name && git tag -v $tag 2>&1 | grep "RSA key") || key=joemama
+					drag git clone --branch $tag $url $ashtray/$cig/src/$name || drag git clone $url $ashtray/$cig/src/$name
+					key=$(cd $ashtray/$cig/src/$name && drag git tag -v $tag 2>&1 | grep "RSA key") || key=joemama
 					key=${key##*key }
 					if [[ "${validpgpkeys[*]}" == *"$key"* ]]; then
 						echo "Verified GPG key for $name!"
@@ -97,11 +100,11 @@ else
 						fi
 					fi
 				elif [[ ${source[$i]} == *branch=* ]]; then
-					git clone --branch $branch $url $ashtray/$cig/src/$name || git clone $url $ashtray/$cig/src/$name
+					drag git clone --branch $branch $url $ashtray/$cig/src/$name || drag git clone $url $ashtray/$cig/src/$name
 					echo "Skipping GPG Verification, using branch."
 					echo
 				else
-					git clone $url $ashtray/$cig/src/$name
+					drag git clone $url $ashtray/$cig/src/$name
 					echo
 					echo "SKIPPING GPG VERIFICATION FOR $name!"
 					echo "BE WARNED!!!"
@@ -120,9 +123,12 @@ else
 				url="${url#*::}"
 				url="${url%%\?*}"
 				url="${url%%#*}"
+				echo
+				echo "Cloning $url"
 				cd $ashtray/$cig/src
-				hg clone $url
+				drag hg clone $url
 			else
+				echo
 				if [[ ${source[$i]} == *::* ]]; then
 					name=${source[$i]%%::*}
 				else
@@ -134,9 +140,9 @@ else
 					cp $stash/$cig/$name $ashtray/$cig/src/$name
 				fi
 				if [[ "${source[$i]}" == *"http://"* || ${source[$i]} == *"https://"* ]]; then
-					curl -Lo $ashtray/$cig/src/$name "http${source[$i]#*http}"
+					drag curl -Lo $ashtray/$cig/src/$name "http${source[$i]#*http}"
 				elif [[ ${source[$i]} == *"ftp://"* ]]; then
-					curl -Lo $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
+					drag curl -Lo $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
 				fi
 				if [[ -n $sha256sums ]]; then
 					actual=$(sha256sum $ashtray/$cig/src/$name)
@@ -170,7 +176,7 @@ else
 						[yY])
 						;;
 						*)
-						rm -rf $ashtray/$cig/src
+						drag rm -rf $ashtray/$cig/src
 						exit 1;;
 					esac
 					echo
@@ -182,23 +188,23 @@ else
                         if [[ "${noextract[*]}" != *$i* ]]; then
                                 case $i in
                                         *.tar.gz|*.tgz)
-                                                tar xzf $i;;
+                                                drag tar xzf $i;;
                                         *.tar.bz2|*.tar|*.tbz)
-                                                tar xf $i;;
+                                                drag tar xf $i;;
                                         *.tar.xz)
-                                                tar xJf $i;;
+                                                drag tar xJf $i;;
 					*.tar.zst)
-						zstd -cd $i | tar xf -;;
+						drag zstd -cd $i | tar xf -;;
 					*.tar.lz)
-						lzip -cd $i | tar xf -;;
+						drag lzip -cd $i | tar xf -;;
                                         *.zip)
-                                                unzip $i;;
+                                                drag unzip $i;;
                                         *.gz)
-                                                gzip -d $i;;
+                                                drag gzip -d $i;;
                                         *.bz2)
-                                                bzip2 -d $i;;
+                                                drag bzip2 -d $i;;
                                         *.xz)
-                                                unxz $i;;
+                                                drag unxz $i;;
                                 esac
                         fi
                 done
