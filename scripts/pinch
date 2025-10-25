@@ -135,7 +135,7 @@ else
 					name=${source[$i]##*/}
 				fi
 				if [[ ${source[$i]} == *"http://"* || ${source[$i]} == *"https://"* || ${source[$i]} == *"ftp://"* ]]; then
-					echo "Downloading $url"
+					echo "Downloading ${source##*::}"
 				else
 					cp $stash/$cig/$name $ashtray/$cig/src/$name
 				fi
