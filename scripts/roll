@@ -3,6 +3,7 @@
 set -e
 
 ashtray=$HOME/.cache/drag/ashtray
+mkdir -p $ashtray
 export CARCH=$(uname -m)
 export CHOST=$(cc -dumpmachine)
 

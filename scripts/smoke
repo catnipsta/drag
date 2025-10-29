@@ -3,6 +3,7 @@
 set -e
 
 ashtray=$HOME/.cache/drag/ashtray
+mkdir -p $ashtray
 
 if [[ -z "$@" ]]; then
         echo "You can't smoke that!"

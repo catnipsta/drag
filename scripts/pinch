@@ -4,6 +4,7 @@ set -e
 
 stash=$HOME/.cache/drag/stash
 ashtray=$HOME/.cache/drag/ashtray
+mkdir -p $stash $ashtray
 
 if [[ -z "$@" ]]; then
 	echo "You can't pinch that!"

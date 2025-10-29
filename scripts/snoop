@@ -1,6 +1,7 @@
 #!/bin/bash
 
 stash=$HOME/.cache/drag/stash
+mkdir -p $stash
 
 if [[ -z "$@" ]]; then
         echo "You can't snoop that!"
