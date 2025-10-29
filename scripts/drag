@@ -110,4 +110,6 @@ for ii in {1..5}; do
 done
 printf "\r"
 wait $pid
-exit $?
+code=$?
+[[ $code != 0 ]] && echo "$1 exited with code $code"
+exit $code
