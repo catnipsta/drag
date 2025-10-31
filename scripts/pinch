@@ -206,6 +206,8 @@ else
                                                 drag bzip2 -d $i;;
                                         *.xz)
                                                 drag unxz $i;;
+					*.deb)
+						drag ar x $i;;
                                 esac
                         fi
                 done
