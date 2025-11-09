@@ -99,7 +99,7 @@ else
                         echo "$cig not rolled"
                         roll $cig
 		elif [ $binary == true ]; then
-			rm -rf $ashtray/$cig/pkg || $SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
+			rm -rf $ashtray/$cig/pkg >/dev/null 2>&1 || $SUDO bash -c "rm -rf '$ashtray/$cig'/pkg"
 			mkdir -p $ashtray/$cig
 			cd $ashtray/$cig
 			echo "Downloading $cig x86_64 binary"

@@ -26,7 +26,7 @@ else
                       		SUDO="su root"
                 fi 
 		export ashtray
-		rm -rf $ashtray/$cig/ || $SUDO bash -c "rm -rf $ashtray/$cig"
+		rm -rf $ashtray/$cig/ >/dev/null 2>&1 || $SUDO bash -c "rm -rf $ashtray/$cig"
 		mkdir -p $ashtray/$cig/src
 		source=()
 		validpgpkeys=()
