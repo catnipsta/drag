@@ -36,7 +36,7 @@ else
                         SUDO=
                 fi
 		[[ $EUID != 0 && $SUDO = "" ]] && echo "Please install su, sudo, or doas to escalate privileges." && exit 1
-                [ -d $pkgdir ] && $SUDO bash -c "rm -rf '$pkgdir'"
+                rm -rf $pkgdir || $SUDO bash -c "rm -rf '$pkgdir'"
                 rm -f $ashtray/$cig/.rolled
                 (source $HOME/.cache/drag/stash/$cig/PKGBUILD
                 if declare -f prepare > /dev/null && [ ! -f $ashtray/$cig/.prp ]; then cd $srcdir; prepare; touch $ashtray/$cig/.prp; fi

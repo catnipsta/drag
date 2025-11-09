@@ -18,18 +18,15 @@ else
 			echo "$cig not stashed"
 			stash $cig
 		fi
-		if [ -d $ashtray/$cig/pkg ]; then
-			if command -v sudo >/dev/null 2>&1; then
-	                        SUDO=sudo
-	                elif command -v doas >/dev/null 2>&1; then
-	                        SUDO=doas
-	                elif command -v su >/dev/null 2>&1; then
-                       		SUDO="su root"
-	                fi 
-			export ashtray cig
-			$SUDO bash -c "rm -rf '$ashtray/$cig'"
-		fi
-		rm -rf $ashtray/$cig/
+		if command -v sudo >/dev/null 2>&1; then
+                        SUDO=sudo
+                elif command -v doas >/dev/null 2>&1; then
+                        SUDO=doas
+                elif command -v su >/dev/null 2>&1; then
+                      		SUDO="su root"
+                fi 
+		export ashtray
+		rm -rf $ashtray/$cig/ || $SUDO bash -c "rm -rf $ashtray/$cig"
 		mkdir -p $ashtray/$cig/src
 		source=()
 		validpgpkeys=()
@@ -189,25 +186,25 @@ else
                         if [[ "${noextract[*]}" != *$i* ]]; then
                                 case $i in
                                         *.tar.gz|*.tgz)
-                                                drag tar xzf $i;;
+                                                drag "tar xzf $i";;
                                         *.tar.bz2|*.tar|*.tbz)
-                                                drag tar xf $i;;
+                                                drag "tar xf $i";;
                                         *.tar.xz)
-                                                drag tar xJf $i;;
+                                                drag "tar xJf $i";;
 					*.tar.zst)
-						drag zstd -cd $i | tar xf -;;
+						drag "zstd -cd $i | tar xf -";;
 					*.tar.lz)
-						drag lzip -cd $i | tar xf -;;
+						drag "lzip -cd $i | tar xf -";;
                                         *.zip)
-                                                drag unzip $i;;
+                                                drag "unzip $i";;
                                         *.gz)
-                                                drag gzip -d $i;;
+                                                drag "gzip -d $i";;
                                         *.bz2)
-                                                drag bzip2 -d $i;;
+                                                drag "bzip2 -d $i";;
                                         *.xz)
-                                                drag unxz $i;;
+                                                drag "unxz $i";;
 					*.deb)
-						drag ar x $i;;
+						drag "ar x $i";;
                                 esac
                         fi
                 done
