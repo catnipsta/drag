@@ -71,4 +71,4 @@ Q: How does drag handle dependencies?</br>
 A: Drag is free of dependency resolution, giving the user full control of their system. If you wish to list the recommended dependencies provided by Arch Linux, you may use the wiff command.</br>
 </br>
 Q: Is the drag package manager meant to be used on a specific operating system?</br>
-A: Although drag was created for Whispix Linux, it should run on just about any Linux distribution, LFS, and maybe even some BSDs.</br>
+A: Although drag was created for Wispux Linux, it should run on just about any Linux distribution, LFS, and maybe even some BSDs.</br>
