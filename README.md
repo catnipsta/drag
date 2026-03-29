@@ -15,7 +15,7 @@ Installs packge</br>
 -o to smoke without stubbing first.</br>
 -b to blaze before smoking.</br>
 -bo or -ob to update packages without stubbing previous version.</br>
---bin64 to download the x86_64 Arch Linux binary</br>
+--bin64 to download the x86_64 Arch Linux binary (NOT RECOMMENDED AND WILL ALMOST CERTAINLY LEAD TO DEPENDENCY VERSION MISMATCHES)</br>
 ### stub
 Uninstall select packages</br>
 ### wiff
