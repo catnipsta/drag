@@ -37,7 +37,7 @@ else
 	cigs=()
 	if [ $binary == false ]; then
 	for cig in "$@"; do
-		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" && blaze == false && ( ! -d /var/lib/drag/smoked/$cig || $override == true ) ]]; then
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" && $blaze == false && ( ! -d /var/lib/drag/smoked/$cig || $override == true ) ]]; then
 			cigs+=($cig)
 		fi
 	done
@@ -162,7 +162,7 @@ cd /
 if [ -d '$ashtray/../stash/$cig' ]; then 
 for i in \$(find '$ashtray/../stash/$cig/' -name *.install); do
 	(source \"\$i\"
-	if declare -f post_install > /dev/null; then post_install || true; fi)
+	if declare -f post_install > /dev/null; then post_install \$(cat '$ashtray/$cig/ver') || true; fi)
 done
 fi"
 
