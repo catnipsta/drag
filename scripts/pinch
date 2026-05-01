@@ -68,7 +68,8 @@ else
 					echo "Skipping GPG Verification, using commit."
 					echo
 				elif [[ ${source[$i]} == *tag=* ]]; then
-					drag git clone --branch $tag $url $ashtray/$cig/src/$name || drag git clone $url $ashtray/$cig/src/$name
+					drag git clone $url $ashtray/$cig/src/$name
+					drag git -C $ashtray/$cig/src/$name checkout $tag
 					key=$(cd $ashtray/$cig/src/$name && drag git tag -v $tag 2>&1 | grep "RSA key") || key=joemama
 					key=${key##*key }
 					if [[ "${validpgpkeys[*]}" == *"$key"* ]]; then
@@ -98,7 +99,8 @@ else
 						fi
 					fi
 				elif [[ ${source[$i]} == *branch=* ]]; then
-					drag git clone --branch $branch $url $ashtray/$cig/src/$name || drag git clone $url $ashtray/$cig/src/$name
+					drag git clone $url $ashtray/$cig/src/$name
+					drag git -C $ashtray/$cig/src/$name checkout $branch
 					echo "Skipping GPG Verification, using branch."
 					echo
 				else
