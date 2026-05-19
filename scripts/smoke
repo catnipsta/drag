@@ -140,7 +140,7 @@ while IFS= read -r file; do
 		mode=\"\$(stat -c %a \"\$file\")\"
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
-                if [[ \$cig != file ]]; then
+                if [[ \$cig != \$file ]]; then
 			install -m\"\$mode\" '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
 		else
 			cp -a '$ashtray/$cig'/pkg\"\$file\" \"\$file\"
@@ -155,7 +155,6 @@ while IFS= read -r file; do
 		chmod \"\$mode\" \"\${file#*'$cig'/pkg}\"
         fi
 done < <(find '$ashtray/$cig'/pkg/*)
-echo
 " || ($SUDO bash -c "rm -rf '/var/lib/drag/smoked/$cig'" && exit 1)
 		printf "\033[A\r"
 		$SUDO drag bash -c "set +e
