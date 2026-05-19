@@ -145,10 +145,10 @@ else
 					drag curl -Lo $ashtray/$cig/src/$name "ftp${source[$i]#*ftp}"
 				fi
 				if [[ -n $sha256sums ]]; then
-					actual=$(sha256sum $ashtray/$cig/src/$name || sha256 $ashtray/$cig/src/$name)
+					actual=$(sha256sum $ashtray/$cig/src/$name || sha256 -q $ashtray/$cig/src/$name)
 					expected=${sha256sums[$i]}
 				elif [[ -n $sha512sums ]]; then
-					actual=$(sha512sum $ashtray/$cig/src/$name || sha512 $ashtray/$cig/src/$name)
+					actual=$(sha512sum $ashtray/$cig/src/$name || sha512 -q $ashtray/$cig/src/$name)
 					expected=${sha512sums[$i]}
 				elif [[ -n $b2sums ]]; then
 					actual=$(b2sum $ashtray/$cig/src/$name)
