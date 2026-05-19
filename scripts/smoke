@@ -150,9 +150,7 @@ while IFS= read -r file; do
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
 		ln -sf \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
 	else
-		mode=\"\$(stat -c %a \"\$file\")\"
-        if [[ -z \"\$mode\" ]]; then mode=\"\$(stat -f %Lp \"\$file\")\"; fi
-        if [[ -z \"\$mode\" ]]; then mode=\"\$(stat -f %p \"\$file\")\"; fi
+		mode=\"\$(stat -c %a \"\$file\" || stat -f %Lp \"\$file\" || stat -f %p \"\$file\")\"
 		mkdir -p \"\${file#*'$cig'/pkg}\"
 		chmod \"\$mode\" \"\${file#*'$cig'/pkg}\"
         fi
