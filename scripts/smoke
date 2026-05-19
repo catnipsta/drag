@@ -63,7 +63,7 @@ else
                         cd $ashtray/$cig/src
                         drag curl -Lqo ca-certificates.crt https://curl.se/ca/cacert.pem
                         drag curl -Lqo certsha256sum       https://curl.se/ca/cacert.pem.sha256
-                        actual=$(sha256sum ca-certificates.crt || sha256 ca-certificates.crt)
+                        actual=$(sha256sum ca-certificates.crt || sha256 -q ca-certificates.crt)
                         actual=${actual%%\ *}
                         if [[ "$(cat certsha256sum)" == *$actual* ]]; then
                                 echo "Verified ca-certificates"
