@@ -37,7 +37,7 @@ else
 	cigs=()
 	if [ $binary == false ]; then
 	for cig in "$@"; do
-		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" && $blaze == false && ( ! -d /var/lib/drag/smoked/$cig || $override == true ) ]]; then
+		if [[ ! -f $ashtray/../stash/$cig/PKGBUILD && $cig != "ca-certificates" && $cig != "-b" && $cig != "-o" && $cig != "-bo" && $cig != "-ob" && $cig != "--bin64" && $cig != "drag" && $blaze == false && ( ! -d /var/lib/drag/smoked/$cig || $override == true ) ]]; then
 			cigs+=($cig)
 		fi
 	done
@@ -63,7 +63,7 @@ else
                         cd $ashtray/$cig/src
                         drag curl -Lqo ca-certificates.crt https://curl.se/ca/cacert.pem
                         drag curl -Lqo certsha256sum       https://curl.se/ca/cacert.pem.sha256
-                        actual=$(sha256sum ca-certificates.crt)
+                        actual=$(sha256sum ca-certificates.crt || sha256 ca-certificates.crt)
                         actual=${actual%%\ *}
                         if [[ "$(cat certsha256sum)" == *$actual* ]]; then
                                 echo "Verified ca-certificates"
@@ -137,9 +137,7 @@ mkdir -p '/var/lib/drag/smoked/$cig'
 cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
 while IFS= read -r file; do
         if [[ \"\$(file \"\$file\")\" != *\": \"*\"directory\"* && \"\$(file \"\$file\")\" != *\": \"*\"symbolic link\"* ]]; then
-		mode=\"\$(stat -c %a \"\$file\")\"
-        if [[ -z \"\$mode\" ]]; then mode=\"\$(stat -f %Lp \"\$file\")\"; fi
-        if [[ -z \"\$mode\" ]]; then mode=\"\$(stat -f %p \"\$file\")\"; fi
+		mode=\"\$(stat -c %a \"\$file\" || stat -f %Lp \"\$file\" || stat -f %p \"\$file\")\"
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
                 if [[ \$cig != \$file ]]; then
