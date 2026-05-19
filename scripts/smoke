@@ -138,6 +138,7 @@ cp '$ashtray/$cig/ver' '/var/lib/drag/smoked/$cig/ver'
 while IFS= read -r file; do
         if [[ \"\$(file \"\$file\")\" != *\": \"*\"directory\"* && \"\$(file \"\$file\")\" != *\": \"*\"symbolic link\"* ]]; then
 		mode=\"\$(stat -c %a \"\$file\")\"
+        if [[ -z \"\$mode\" ]]; then mode=\"\$(stat -f %Lp \"\$file\")\"; fi
                 file=\"\${file#*'$cig'/pkg}\"
                 echo \"\$file\" >> '/var/lib/drag/smoked/$cig/clutter'
                 if [[ \$cig != \$file ]]; then
@@ -151,6 +152,7 @@ while IFS= read -r file; do
 		ln -sf \"\$(readlink '$ashtray/$cig'/pkg\"\$file\")\" \"\$file\"
 	else
 		mode=\"\$(stat -c %a \"\$file\")\"
+        if [[ -z \"\$mode\" ]]; then mode=\"\$(stat -f %Lp \"\$file\")\"; fi
 		mkdir -p \"\${file#*'$cig'/pkg}\"
 		chmod \"\$mode\" \"\${file#*'$cig'/pkg}\"
         fi
