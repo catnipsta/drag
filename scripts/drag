@@ -94,7 +94,19 @@ pid=$!
 i=1
 for ii in {1..6}; do echo; done
 while kill -0 $pid 2>/dev/null; do
-	printf "\r"
+#	for ii in {1..5}; do
+#		printf "\033[A"
+#		printf "\r                    "
+#	done
+#	for ii in {1..5}; do
+#		printf "\r${cigarette[((i*5+ii-6))]}\n"
+#	done
+#	sleep 0.125
+#	((i < 17)) && ((i++)) || i=1
+#done
+#for ii in {1..5}; do
+#	printf "\033[A"
+	printf "\r                    "
 done
 printf "\r"
 wait $pid
