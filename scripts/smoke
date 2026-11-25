@@ -82,6 +82,7 @@ else
 			echo "Smoking drag"
 			cd $ashtray
 			drag git clone https://github.com/catnipsta/drag
+			drag git -C drag checkout burna
 			chmod +x drag/scripts/*
 			$SUDO bash -c "cp drag/scripts/* /usr/bin/"
 			rm -rf drag
